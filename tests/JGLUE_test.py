@@ -48,3 +48,21 @@ def test_load_jsquad(
 
     assert count_num_data("train") == expected_num_train
     assert count_num_data("validation") == expected_num_valid
+
+
+def test_load_marc_ja(
+    dataset_path: str,
+    dataset_name: str = "MARC-ja",
+    expected_num_train: int = 187528,
+    expected_num_valid: int = 5654,
+):
+    dataset = ds.load_dataset(
+        path=dataset_path,
+        name=dataset_name,
+        is_pos_neg=True,
+        max_char_length=500,
+        is_han_to_zen=True,
+    )
+
+    assert dataset["train"].num_rows == expected_num_train
+    assert dataset["validation"].num_rows == expected_num_valid
