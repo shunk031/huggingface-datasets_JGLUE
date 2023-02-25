@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - 'README.md'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10']
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -U pip setuptools wheel poetry
+          poetry install
+      - name: Format
+        run: |
+          poetry run black --check .
+      - name: Lint
+        run: |
+          poetry run flake8 . --ignore=E501,W503,E203
+      - name: Type check
+        run: |
+          poetry run mypy . \
+            --ignore-missing-imports \
+            --no-strict-optional \
+            --no-site-packages \
+            --cache-dir=/dev/null
+            
+      - name: Run tests
+        run: |
+          poetry run pytest --color=yes -rf
