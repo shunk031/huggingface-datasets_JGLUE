@@ -156,6 +156,25 @@ tests = ["attrs[tests-no-zope]", "zope.interface"]
 tests-no-zope = ["cloudpickle", "cloudpickle", "hypothesis", "hypothesis", "mypy (>=0.971,<0.990)", "mypy (>=0.971,<0.990)", "pympler", "pympler", "pytest (>=4.3.0)", "pytest (>=4.3.0)", "pytest-mypy-plugins", "pytest-mypy-plugins", "pytest-xdist[psutil]", "pytest-xdist[psutil]"]
 
 [[package]]
+name = "beautifulsoup4"
+version = "4.11.2"
+description = "Screen-scraping library"
+category = "main"
+optional = false
+python-versions = ">=3.6.0"
+files = [
+    {file = "beautifulsoup4-4.11.2-py3-none-any.whl", hash = "sha256:0e79446b10b3ecb499c1556f7e228a53e64a2bfcebd455f370d8927cb5b59e39"},
+    {file = "beautifulsoup4-4.11.2.tar.gz", hash = "sha256:bc4bdda6717de5a2987436fb8d72f45dc90dd856bdfd512a1314ce90349a0106"},
+]
+
+[package.dependencies]
+soupsieve = ">1.2"
+
+[package.extras]
+html5lib = ["html5lib"]
+lxml = ["lxml"]
+
+[[package]]
 name = "black"
 version = "23.1.0"
 description = "The uncompromising code formatter."
@@ -658,6 +677,70 @@ files = [
 ]
 
 [[package]]
+name = "mecab-python3"
+version = "1.0.6"
+description = "Python wrapper for the MeCab morphological analyzer for Japanese"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "mecab-python3-1.0.6.tar.gz", hash = "sha256:16f38ace484020bd3446a10054829678c1e7b97f1740b58b00a31d595cff025e"},
+    {file = "mecab_python3-1.0.6-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:0fb9f5a06f9cd9c5724608956128b91f5330248a78e9de322a0abd5beaba24a3"},
+    {file = "mecab_python3-1.0.6-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:6c99ec5f5581e4b56c8b68b4eeac4c6b59c6de12e66a2cfe4b1c6f8e87d38bd7"},
+    {file = "mecab_python3-1.0.6-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:30177272efa6ba26909b540e3816659c9f93ee49a5cc2b8ea47c17eff05c686b"},
+    {file = "mecab_python3-1.0.6-cp310-cp310-win_amd64.whl", hash = "sha256:fd10ba05f94dea7fe5e281336b7a4d07f79062c25139077d935833d0db303450"},
+    {file = "mecab_python3-1.0.6-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:023cfd4efa26fc61563ee185e8ac3d5fcdffcaba01931bbae34aa0ec06814875"},
+    {file = "mecab_python3-1.0.6-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3eb8655d4eb7e17dbe7f409b8dda327539de9ee8cf06ebe338aa595bb597b53d"},
+    {file = "mecab_python3-1.0.6-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a455f0f1830392548366aae56819a22fa0f5786c39c4cf6cf84fe438a5fc7cbc"},
+    {file = "mecab_python3-1.0.6-cp311-cp311-win_amd64.whl", hash = "sha256:e28997040b5ea9df3cf8969c5d28e7ba730ef4f924badac0548cd14383e56c66"},
+    {file = "mecab_python3-1.0.6-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:2958a94ee7ed521e95c333a7b66adcead9973db3d4f4873789c425d41726e52c"},
+    {file = "mecab_python3-1.0.6-cp36-cp36m-win_amd64.whl", hash = "sha256:c80e58dcc90da095b64799950046dc4b9db3fb6bf30a8f817d1639cdaf601ba1"},
+    {file = "mecab_python3-1.0.6-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:8f0c5fe224c28ebd6fad2199be129755246091310de71eb9a43d88473d5b8950"},
+    {file = "mecab_python3-1.0.6-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e049805f8342020b559357f4ea2b69b7d4faf8681c979ffd868d4d25d3a89021"},
+    {file = "mecab_python3-1.0.6-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b56692cef89cd8ad0179bd2f989e4b3209686eb59124e0191167d9a3e64cd1a0"},
+    {file = "mecab_python3-1.0.6-cp37-cp37m-win_amd64.whl", hash = "sha256:68334cbc6e0442ccd57770137ece585de9a512f01405bd2ad074fd28578180f8"},
+    {file = "mecab_python3-1.0.6-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:ef43e4ab82396d1a59f4d8e2237c4136e09391e8e8ba623af4b52e6b52377fdd"},
+    {file = "mecab_python3-1.0.6-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:fde76ebc2fcf4f375b520a706af316f88be304302f5e5d36105992a1ecd3ea1b"},
+    {file = "mecab_python3-1.0.6-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:849aa7cfb828f0fb65340666fb2ae281855f5319699291121e116f43f478401c"},
+    {file = "mecab_python3-1.0.6-cp38-cp38-win_amd64.whl", hash = "sha256:d1061bcd3d5567d6522e8794773689e6f9dedadcd3d3b1652893142f6334ec95"},
+    {file = "mecab_python3-1.0.6-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:b2a3b6243d709ccf6672d54c9c17cb6281a17737626caaafb0219944835d6b9c"},
+    {file = "mecab_python3-1.0.6-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b8c995629aeb6bdddf37eee1c4049549ff1993e3888e28eb6cc59c8dce79de41"},
+    {file = "mecab_python3-1.0.6-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e00f0c329c7708b6cf5e5b2b1772535de3d6d69f99e6105a1acf40b94c62afe5"},
+    {file = "mecab_python3-1.0.6-cp39-cp39-win_amd64.whl", hash = "sha256:9c3eeb4adf864a74ced9a1c5443b174f1e851323143ca6f24391fb6db8d44110"},
+]
+
+[package.extras]
+unidic = ["unidic"]
+unidic-lite = ["unidic-lite"]
+
+[[package]]
+name = "mojimoji"
+version = "0.0.12"
+description = "A fast converter between Japanese hankaku and zenkaku characters"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "mojimoji-0.0.12-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:98f41bf146b731ed4554c60495c53fd96339a52e02b22a869d6eaf2433047505"},
+    {file = "mojimoji-0.0.12-cp36-cp36m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:61c03620528650603b3c92f367d6db2a645c2638408add5ba03fed982af7cd1d"},
+    {file = "mojimoji-0.0.12-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f7f4da9e809fa68588e817f1ae351c4274be2366e542c51393657cae7bcf114f"},
+    {file = "mojimoji-0.0.12-cp36-cp36m-win_amd64.whl", hash = "sha256:05b589361b6f35aef96df3a7f64c2a286a7e7aed9865cd7baf1a5876bb4cd16a"},
+    {file = "mojimoji-0.0.12-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:a98fb09bd49245f9d9cd29603b912dc2f94e619e6d2f5b722553a5dbe113ce6c"},
+    {file = "mojimoji-0.0.12-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b110101148b920eba60fa4627b904fa18801c5ca3667880494b7f0d25dd1a5fe"},
+    {file = "mojimoji-0.0.12-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d974a034528cb9fb95fcade6f3ffb73dc1dc336e17413486a5094724cbe9e34f"},
+    {file = "mojimoji-0.0.12-cp37-cp37m-win_amd64.whl", hash = "sha256:f180e2e8ff47e54cc36b0de147bceaf76fab88ef06775835a55b38ef6b82c161"},
+    {file = "mojimoji-0.0.12-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:9723531661911479bbfce08ec8a62c7b5958a307f33a025fe938d19550b13f9d"},
+    {file = "mojimoji-0.0.12-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7a15864d8de07a487280c528fe3d2aeaad05bb2ce6d8bf201fc1480b0b5db337"},
+    {file = "mojimoji-0.0.12-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:59cc0af7d3be3b6847c8dcf1a4e0d09cc0646ff64c101308903d14871245403c"},
+    {file = "mojimoji-0.0.12-cp38-cp38-win_amd64.whl", hash = "sha256:8a1285040b7ef7ca5bafe095b62b99507cf19e10c6000e3279bc44d9430da3d9"},
+    {file = "mojimoji-0.0.12-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:ae5e6e8d4e70849f4217fa00ca7d770354f5a13c04778b6f07f3bceb0a636abd"},
+    {file = "mojimoji-0.0.12-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b2247233f4b3bee6ab601ac7fcbd84124ad91788a7418c1430f93a4bac340218"},
+    {file = "mojimoji-0.0.12-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:515f6fa5659d77a172f1fb46950d34674f33cf487e9aa131bf9422cbe127e5f4"},
+    {file = "mojimoji-0.0.12-cp39-cp39-win_amd64.whl", hash = "sha256:b379781a0cb95eeb79939608b4a013ad7b79ba03b7fe9b795eadc40bd96a06c9"},
+    {file = "mojimoji-0.0.12.tar.gz", hash = "sha256:01a3d73e8b3c641386b1824d5106b8ea5c351a641623c910d89d8f02520c1b0e"},
+]
+
+[[package]]
 name = "multidict"
 version = "6.0.4"
 description = "multidict implementation"
@@ -1033,6 +1116,21 @@ files = [
 ]
 
 [[package]]
+name = "pyknp"
+version = "0.6.1"
+description = "Python module for JUMAN/KNP"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+files = [
+    {file = "pyknp-0.6.1-py3-none-any.whl", hash = "sha256:c988cbd92d645e43d51a406835147a7c24aa849894802e22fcf5c4e1475da805"},
+    {file = "pyknp-0.6.1.tar.gz", hash = "sha256:5fca288a70304c745d20da5657c6175b5eadf7a7a571ed4f57bb157eb6e7df4d"},
+]
+
+[package.dependencies]
+six = "*"
+
+[[package]]
 name = "pytest"
 version = "7.2.1"
 description = "pytest: simple powerful testing with Python"
@@ -1184,6 +1282,18 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 files = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
+]
+
+[[package]]
+name = "soupsieve"
+version = "2.4"
+description = "A modern CSS selector implementation for Beautiful Soup."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "soupsieve-2.4-py3-none-any.whl", hash = "sha256:49e5368c2cda80ee7e84da9dbe3e110b70a4575f196efb74e51b94549d921955"},
+    {file = "soupsieve-2.4.tar.gz", hash = "sha256:e28dba9ca6c7c00173e34e4ba57448f0688bb681b7c5e8bf4971daafc093d69a"},
 ]
 
 [[package]]
@@ -1447,4 +1557,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "a55837895406c731c213ac0f33c600d9b112b539b4ee862471d76d79689be747"
+content-hash = "e0d6be6207a0a9cfdb7fc6392ac32754f5bc664fe7834e1721ec0f041c2391d7"

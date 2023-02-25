@@ -9,6 +9,10 @@ packages = []
 [tool.poetry.dependencies]
 python = "^3.9"
 datasets = "^2.10.0"
+beautifulsoup4 = "^4.11.2"
+mecab-python3 = "^1.0.6"
+pyknp = "^0.6.1"
+mojimoji = "^0.0.12"
 
 
 [tool.poetry.group.dev.dependencies]
