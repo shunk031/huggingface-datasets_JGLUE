@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Shunsuke KITADA <shunsuke.kitada.0831@gmail.com>"]
 readme = "README.md"
-packages = [{include = "huggingface_datasets_jglue"}]
+packages = []
 
 [tool.poetry.dependencies]
 python = "^3.9"
