@@ -1,8 +1,7 @@
 import json
 import random
 import string
-from collections import defaultdict
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, TypedDict, Union
 
 import datasets as ds
 import pandas as pd
@@ -54,8 +53,12 @@ _DESCRIPTION_CONFIGS = {
 _URLS = {
     "MARC-ja": {
         "data": "https://s3.amazonaws.com/amazon-reviews-pds/tsv/amazon_reviews_multilingual_JP_v1_00.tsv.gz",
-        "filter_review_id_list/valid.txt": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/preprocess/marc-ja/data/filter_review_id_list/valid.txt",
-        "label_conv_review_id_list/valid.txt": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/preprocess/marc-ja/data/label_conv_review_id_list/valid.txt",
+        "filter_review_id_list": {
+            "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/preprocess/marc-ja/data/filter_review_id_list/valid.txt"
+        },
+        "label_conv_review_id_list": {
+            "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/preprocess/marc-ja/data/label_conv_review_id_list/valid.txt"
+        },
     },
     "JSTS": {
         "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jsts-v1.1/train-v1.1.json",
@@ -141,7 +144,15 @@ def features_jcommonsenseqa() -> ds.Features:
 
 
 def features_marc_ja() -> ds.Features:
-    features = ds.Features()
+    features = ds.Features(
+        {
+            "sentence": ds.Value("string"),
+            "label": ds.ClassLabel(
+                num_classes=3, names=["positive", "negative", "neutral"]
+            ),
+            "review_id": ds.Value("string"),
+        }
+    )
     return features
 
 
@@ -151,16 +162,14 @@ class MarcJaConfig(ds.BuilderConfig):
         name: str = "MARC-ja",
         is_han_to_zen: bool = False,
         max_instance_num: Optional[int] = None,
-        max_char_length: Optional[int] = None,
-        is_pos_neg: bool = False,
+        max_char_length: int = 500,
+        is_pos_neg: bool = True,
         train_ratio: float = 0.94,
         val_ratio: float = 0.03,
         test_ratio: float = 0.03,
         output_testset: bool = False,
-        filter_review_id_list_valid: Optional[str] = None,
-        filter_review_id_list_test: Optional[str] = None,
-        label_conv_review_id_list_valid: Optional[str] = None,
-        label_conv_review_id_list_test: Optional[str] = None,
+        filter_review_id_list_valid: bool = True,
+        label_conv_review_id_list_valid: bool = True,
         version: Optional[Union[ds.utils.Version, str]] = ds.utils.Version("0.0.0"),
         data_dir: Optional[str] = None,
         data_files: Optional[ds.data_files.DataFilesDict] = None,
@@ -184,20 +193,143 @@ class MarcJaConfig(ds.BuilderConfig):
         self.max_char_length = max_char_length
         self.is_pos_neg = is_pos_neg
         self.output_testset = output_testset
+
         self.filter_review_id_list_valid = filter_review_id_list_valid
-        self.filter_review_id_list_test = filter_review_id_list_test
         self.label_conv_review_id_list_valid = label_conv_review_id_list_valid
-        self.label_conv_review_id_list_test = label_conv_review_id_list_test
+
+
+def get_label(rating: int, is_pos_neg: bool = False) -> Optional[str]:
+    if rating >= 4:
+        return "positive"
+    elif rating <= 2:
+        return "negative"
+    else:
+        if is_pos_neg:
+            return None
+        else:
+            return "neutral"
+
+
+def is_filtered_by_ascii_rate(text: str, threshold: float = 0.9) -> bool:
+    ascii_letters = set(string.printable)
+    rate = sum(c in ascii_letters for c in text) / len(text)
+    return rate >= threshold
+
+
+def shuffle_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+    instances = df.to_dict(orient="records")
+    random.seed(1)
+    random.shuffle(instances)
+    return pd.DataFrame(instances)
+
+
+def get_filter_review_id_list(
+    filter_review_id_list_paths: Dict[str, str],
+) -> Dict[str, List[str]]:
+    filter_review_id_list_valid = filter_review_id_list_paths.get("valid")
+    filter_review_id_list_test = filter_review_id_list_paths.get("test")
+
+    filter_review_id_list = {}
+
+    if filter_review_id_list_valid is not None:
+        with open(filter_review_id_list_valid, "r") as rf:
+            filter_review_id_list["valid"] = [line.rstrip() for line in rf]
+
+    if filter_review_id_list_test is not None:
+        with open(filter_review_id_list_test, "r") as rf:
+            filter_review_id_list["test"] = [line.rstrip() for line in rf]
+
+    return filter_review_id_list
+
+
+def get_label_conv_review_id_list(
+    label_conv_review_id_list_paths: Dict[str, str],
+) -> Dict[str, Dict[str, str]]:
+    import csv
+
+    label_conv_review_id_list_valid = label_conv_review_id_list_paths.get("valid")
+    label_conv_review_id_list_test = label_conv_review_id_list_paths.get("test")
+
+    label_conv_review_id_list: Dict[str, Dict[str, str]] = {}
+
+    if label_conv_review_id_list_valid is not None:
+        with open(label_conv_review_id_list_valid, "r") as rf:
+            label_conv_review_id_list["valid"] = {
+                row[0]: row[1] for row in csv.reader(rf)
+            }
+
+    if label_conv_review_id_list_test is not None:
+        with open(label_conv_review_id_list_test, "r") as rf:
+            label_conv_review_id_list["test"] = {
+                row[0]: row[1] for row in csv.reader(rf)
+            }
+
+    return label_conv_review_id_list
+
+
+def output_data(
+    df: pd.DataFrame,
+    train_ratio: float,
+    val_ratio: float,
+    test_ratio: float,
+    output_testset: bool,
+    filter_review_id_list_paths: Dict[str, str],
+    label_conv_review_id_list_paths: Dict[str, str],
+) -> Dict[str, pd.DataFrame]:
+    instance_num = len(df)
+    split_dfs: Dict[str, pd.DataFrame] = {}
+    length1 = int(instance_num * train_ratio)
+    split_dfs["train"] = df.iloc[:length1]
+
+    length2 = int(instance_num * (train_ratio + val_ratio))
+    split_dfs["valid"] = df.iloc[length1:length2]
+    split_dfs["test"] = df.iloc[length2:]
+
+    filter_review_id_list = get_filter_review_id_list(
+        filter_review_id_list_paths=filter_review_id_list_paths,
+    )
+    label_conv_review_id_list = get_label_conv_review_id_list(
+        label_conv_review_id_list_paths=label_conv_review_id_list_paths,
+    )
+
+    for eval_type in ("valid", "test"):
+        if filter_review_id_list.get(eval_type):
+            df = split_dfs[eval_type]
+            df = df[~df["review_id"].isin(filter_review_id_list[eval_type])]
+            split_dfs[eval_type] = df
+
+    for eval_type in ("valid", "test"):
+        if label_conv_review_id_list.get(eval_type):
+            df = split_dfs[eval_type]
+            df = df.assign(
+                converted_label=df["review_id"].map(label_conv_review_id_list["valid"])
+            )
+            df = df.assign(
+                label=df[["label", "converted_label"]].apply(
+                    lambda xs: xs["label"]
+                    if pd.isnull(xs["converted_label"])
+                    else xs["converted_label"],
+                    axis=1,
+                )
+            )
+            df = df.drop(columns=["converted_label"])
+            split_dfs[eval_type] = df
+
+    return {
+        "train": split_dfs["train"],
+        "valid": split_dfs["valid"],
+    }
 
 
 def preprocess_for_marc_ja(
     config: MarcJaConfig,
     data_file_path: str,
-    filter_review_id_list_path: str,
-    label_conv_review_id_list_path: str,
-) -> Dict[str, str]:
+    filter_review_id_list_paths: Dict[str, str],
+    label_conv_review_id_list_paths: Dict[str, str],
+) -> Dict[str, pd.DataFrame]:
     import mojimoji
     from bs4 import BeautifulSoup
+    from tqdm import tqdm
 
     df = pd.read_csv(data_file_path, delimiter="\t")
     df = df[["review_body", "star_rating", "review_id"]]
@@ -205,39 +337,28 @@ def preprocess_for_marc_ja(
     # rename columns
     df = df.rename(columns={"review_body": "text", "star_rating": "rating"})
 
-    def get_label(rating: int, is_pos_neg: bool = False) -> Optional[str]:
-        if rating >= 4:
-            return "positive"
-        elif rating <= 2:
-            return "negative"
-        else:
-            if is_pos_neg:
-                return None
-            else:
-                return "neutral"
-
     # convert the rating to label
+    tqdm.pandas(dynamic_ncols=True, desc="Convert the rating to the label")
     df = df.assign(
-        label=df["rating"].apply(lambda rating: get_label(rating, config.is_pos_neg))
+        label=df["rating"].progress_apply(
+            lambda rating: get_label(rating, config.is_pos_neg)
+        )
     )
 
     # remove rows where the label is None
-    df = df[df["label"].isnull()]
+    df = df[~df["label"].isnull()]
 
     # remove html tags from the text
+    tqdm.pandas(dynamic_ncols=True, desc="Remove html tags from the text")
     df = df.assign(
-        text=df["text"].apply(
+        text=df["text"].progress_apply(
             lambda text: BeautifulSoup(text, "html.parser").get_text()
         )
     )
 
-    def is_filtered_by_ascii_rate(text: str, threshold: float = 0.9) -> bool:
-        ascii_letters = set(string.printable)
-        rate = sum(c in ascii_letters for c in text) / len(text)
-        return rate >= threshold
-
     # filter by ascii rate
-    df = df[~df["text"].apply(is_filtered_by_ascii_rate)]
+    tqdm.pandas(dynamic_ncols=True, desc="Filter by ascii rate")
+    df = df[~df["text"].progress_apply(is_filtered_by_ascii_rate)]
 
     if config.max_char_length is not None:
         df = df[df["text"].str.len() <= config.max_char_length]
@@ -249,140 +370,18 @@ def preprocess_for_marc_ja(
     df = df.rename(columns={"text": "sentence"})
 
     # shuffle dataset
-    instances = df.to_dict(orient="records")
-    random.seed(1)
-    random.shuffle(instances)
+    df = shuffle_dataframe(df)
 
-    def get_filter_review_id_list(
-        filter_review_id_list_valid: Optional[str] = None,
-        filter_review_id_list_test: Optional[str] = None,
-    ) -> Dict[str, List[str]]:
-        filter_review_id_list = defaultdict(list)
-
-        if filter_review_id_list_valid is not None:
-            with open(filter_review_id_list_valid, "r") as rf:
-                filter_review_id_list["valid"] = [line.rstrip() for line in rf]
-
-        if filter_review_id_list_test is not None:
-            with open(filter_review_id_list_test, "r") as rf:
-                filter_review_id_list["test"] = [line.rstrip() for line in rf]
-
-        return filter_review_id_list
-
-    def get_label_conv_review_id_list(
-        label_conv_review_id_list_valid: Optional[str] = None,
-        label_conv_review_id_list_test: Optional[str] = None,
-    ) -> Dict[str, str]:
-        label_conv_review_id_list = defaultdict(list)
-
-        if label_conv_review_id_list_valid is not None:
-            breakpoint()
-            with open(label_conv_review_id_list_valid, "r") as f:
-                label_conv_review_id_list["valid"] = {
-                    row[0]: row[1] for row in csv.reader(f)
-                }
-
-        if label_conv_review_id_list_test is not None:
-            breakpoint()
-            with open(label_conv_review_id_list_test, "r") as f:
-                label_conv_review_id_list["test"] = {
-                    row[0]: row[1] for row in csv.reader(f)
-                }
-
-        return label_conv_review_id_list
-
-    def output_data(
-        instances: List[Dict[str, str]],
-        train_ratio: float,
-        val_ratio: float,
-        test_ratio: float,
-        output_testset: bool = False,
-    ) -> Dict[str, str]:
-        instance_num = len(instances)
-
-        split_instances = {}
-        length1 = int(instance_num * train_ratio)
-        split_instances["train"] = instances[:length1]
-
-        length2 = int(instance_num * (train_ratio + val_ratio))
-        split_instances["valid"] = instances[length1:length2]
-        split_instances["test"] = instances[length2:]
-
-        filter_review_id_list = get_filter_review_id_list(
-            filter_review_id_list_valid=config.filter_review_id_list_valid,
-            filter_review_id_list_test=config.filter_review_id_list_test,
-        )
-        label_conv_review_id_list = get_label_conv_review_id_list(
-            label_conv_review_id_list_valid=config.label_conv_review_id_list_valid,
-            label_conv_review_id_list_test=config.label_conv_review_id_list_test,
-        )
-
-        for eval_type in ("train", "valid", "test"):
-            if not output_testset and eval_type == "test":
-                continue
-
-            for instance in split_instances[eval_type]:
-                # filter
-                if len(filter_review_id_list) != 0:
-                    filter_flag = False
-                    for filter_eval_type in ("valid", "test"):
-                        if (
-                            eval_type == filter_eval_type
-                            and instance["review_id"]
-                            in filter_review_id_list[filter_eval_type]
-                        ):
-                            filter_flag = True
-                        if eval_type != filter_eval_type:
-                            if filter_eval_type in filter_review_id_list:
-                                assert (
-                                    instance["review_id"]
-                                    not in filter_review_id_list[filter_eval_type]
-                                )
-
-                    if filter_flag is True:
-                        continue
-
-                # convert labels
-                if len(label_conv_review_id_list) != 0:
-                    for conv_eval_type in ("valid", "test"):
-                        if (
-                            eval_type == conv_eval_type
-                            and instance["review_id"]
-                            in label_conv_review_id_list[conv_eval_type]
-                        ):
-                            assert (
-                                instance["label"]
-                                != label_conv_review_id_list[conv_eval_type][
-                                    instance["review_id"]
-                                ]
-                            )
-                            # update
-                            instance["label"] = label_conv_review_id_list[
-                                conv_eval_type
-                            ][instance["review_id"]]
-
-                        if eval_type != conv_eval_type:
-                            if conv_eval_type in label_conv_review_id_list:
-                                assert (
-                                    instance["review_id"]
-                                    not in label_conv_review_id_list[conv_eval_type]
-                                )
-
-                if eval_type == "test":
-                    del instance["label"]
-
-                breakpoint()
-
-        breakpoint()
-
-    file_paths = output_data(
-        df,
+    split_dfs = output_data(
+        df=df,
         train_ratio=config.train_ratio,
         val_ratio=config.val_ratio,
         test_ratio=config.test_ratio,
         output_testset=config.output_testset,
+        filter_review_id_list_paths=filter_review_id_list_paths,
+        label_conv_review_id_list_paths=label_conv_review_id_list_paths,
     )
-    return file_paths
+    return split_dfs
 
 
 class JGLUE(ds.GeneratorBasedBuilder):
@@ -441,34 +440,55 @@ class JGLUE(ds.GeneratorBasedBuilder):
         file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
 
         if self.config.name == "MARC-ja":
-            file_paths = preprocess_for_marc_ja(
+            filter_review_id_list = file_paths["filter_review_id_list"]
+            label_conv_review_id_list = file_paths["label_conv_review_id_list"]
+
+            split_dfs = preprocess_for_marc_ja(
                 config=self.config,
                 data_file_path=file_paths["data"],
-                filter_review_id_list_path=file_paths[
-                    "filter_review_id_list/valid.txt"
-                ],
-                label_conv_review_id_list_path=file_paths[
-                    "label_conv_review_id_list/valid.txt"
-                ],
+                filter_review_id_list_paths=filter_review_id_list,
+                label_conv_review_id_list_paths=label_conv_review_id_list,
             )
+            return [
+                ds.SplitGenerator(
+                    name=ds.Split.TRAIN,
+                    gen_kwargs={"split_df": split_dfs["train"]},
+                ),
+                ds.SplitGenerator(
+                    name=ds.Split.VALIDATION,
+                    gen_kwargs={"split_df": split_dfs["valid"]},
+                ),
+            ]
+        else:
+            return [
+                ds.SplitGenerator(
+                    name=ds.Split.TRAIN,
+                    gen_kwargs={"file_path": file_paths["train"]},
+                ),
+                ds.SplitGenerator(
+                    name=ds.Split.VALIDATION,
+                    gen_kwargs={"file_path": file_paths["valid"]},
+                ),
+            ]
 
-        return [
-            ds.SplitGenerator(
-                name=ds.Split.TRAIN,
-                gen_kwargs={
-                    "file_path": file_paths["train"],
-                },
-            ),
-            ds.SplitGenerator(
-                name=ds.Split.VALIDATION,
-                gen_kwargs={
-                    "file_path": file_paths["valid"],
-                },
-            ),
-        ]
+    def _generate_examples(
+        self,
+        file_path: Optional[str] = None,
+        split_df: Optional[pd.DataFrame] = None,
+    ):
+        if self.config.name == "MARC-ja":
+            if split_df is None:
+                raise ValueError(f"Invalid preprocessing for {self.config.name}")
 
-    def _generate_examples(self, file_path: str):
-        with open(file_path, "r") as rf:
-            for i, line in enumerate(rf):
-                json_dict = json.loads(line)
-                yield i, json_dict
+            instances = split_df.to_dict(orient="records")
+            for i, data_dict in enumerate(instances):
+                yield i, data_dict
+
+        else:
+            if file_path is None:
+                raise ValueError(f"Invalid argument for {self.config.name}")
+
+            with open(file_path, "r") as rf:
+                for i, line in enumerate(rf):
+                    json_dict = json.loads(line)
+                    yield i, json_dict

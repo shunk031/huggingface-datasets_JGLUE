@@ -61,7 +61,8 @@ def test_load_marc_ja(
         name=dataset_name,
         is_pos_neg=True,
         max_char_length=500,
-        is_han_to_zen=True,
+        filter_review_id_list_valid=True,
+        label_conv_review_id_list_valid=True,
     )
 
     assert dataset["train"].num_rows == expected_num_train
