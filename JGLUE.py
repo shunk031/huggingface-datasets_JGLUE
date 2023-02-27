@@ -1,6 +1,7 @@
 import json
 import random
 import string
+import warnings
 from typing import Dict, List, Optional, Union
 
 import datasets as ds
@@ -327,8 +328,38 @@ def preprocess_for_marc_ja(
     filter_review_id_list_paths: Dict[str, str],
     label_conv_review_id_list_paths: Dict[str, str],
 ) -> Dict[str, pd.DataFrame]:
-    import mojimoji
-    from bs4 import BeautifulSoup
+    try:
+        import mojimoji
+
+        def han_to_zen(text: str) -> str:
+            return mojimoji.han_to_zen(text)
+
+    except ImportError:
+        warnings.warn(
+            "can't import `mojimoji`, failing back to method that do nothing. "
+            "We recommend running `pip install mojimoji` to reproduce the original preprocessing.",
+            UserWarning,
+        )
+
+        def han_to_zen(text: str) -> str:
+            return text
+
+    try:
+        from bs4 import BeautifulSoup
+
+        def cleanup_text(text: str) -> str:
+            return BeautifulSoup(text, "html.parser").get_text()
+
+    except ImportError:
+        warnings.warn(
+            "can't import `beautifulsoup4`, failing back to method that do nothing."
+            "We recommend running `pip install beautifulsoup4` to reproduce the original preprocessing.",
+            UserWarning,
+        )
+
+        def cleanup_text(text: str) -> str:
+            return text
+
     from tqdm import tqdm
 
     df = pd.read_csv(data_file_path, delimiter="\t")
@@ -350,11 +381,7 @@ def preprocess_for_marc_ja(
 
     # remove html tags from the text
     tqdm.pandas(dynamic_ncols=True, desc="Remove html tags from the text")
-    df = df.assign(
-        text=df["text"].progress_apply(
-            lambda text: BeautifulSoup(text, "html.parser").get_text()
-        )
-    )
+    df = df.assign(text=df["text"].progress_apply(cleanup_text))
 
     # filter by ascii rate
     tqdm.pandas(dynamic_ncols=True, desc="Filter by ascii rate")
@@ -364,7 +391,7 @@ def preprocess_for_marc_ja(
         df = df[df["text"].str.len() <= config.max_char_length]
 
     if config.is_han_to_zen:
-        df = df.assign(text=df["text"].apply(mojimoji.han_to_zen))
+        df = df.assign(text=df["text"].apply(han_to_zen))
 
     df = df[["text", "label", "review_id"]]
     df = df.rename(columns={"text": "sentence"})
