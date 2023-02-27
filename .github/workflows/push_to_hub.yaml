@@ -1,0 +1,26 @@
+name: Sync to Hugging Face Hub
+
+on:
+  workflow_run:
+    workflows:
+      - CI
+    branches:
+      - main
+    types: 
+      - completed
+
+jobs:
+  push_to_hub:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Push to Huggingface hub
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+        run: |
+          git fetch --unshallow
+          git push --force https://${HF_USERNAME}:${HF_TOKEN}@huggingface.co/datasets/${HF_USERNAME}/JGLUE main
