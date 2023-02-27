@@ -137,6 +137,16 @@ from datasets import load_dataset
 dataset = load_dataset("shunk031/JGLUE", name="MARC-ja")
 
 print(dataset)
+# DatasetDict({
+#     train: Dataset({
+#         features: ['sentence', 'label', 'review_id'],
+#         num_rows: 187528
+#     })
+#     validation: Dataset({
+#         features: ['sentence', 'label', 'review_id'],
+#         num_rows: 5654
+#     })
+# })
 ```
 
 #### JSTS
@@ -297,9 +307,9 @@ An example of the JCommonsenseQA looks as follows:
 - `sentence2`: second sentence
 - `label`: sentence similarity: 5 (equivalent meaning) - 0 (completely different meaning)
 
-##### Explanation for yjcaptions_id
+##### Explanation for `yjcaptions_id`
 
-There are the following two cases:
+From [the official README.md](https://github.com/yahoojapan/JGLUE#explanation-for-yjcaptions_id), there are the following two cases:
 
 1. sentence pairs in one image: `(image id)-(sentence1 id)-(sentence2 id)`
     - e.g., 723-844-847
