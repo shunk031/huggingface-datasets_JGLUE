@@ -6,6 +6,7 @@ from typing import Dict, List, Optional, Union
 
 import datasets as ds
 import pandas as pd
+from datasets.tasks import QuestionAnsweringExtractive, TextClassification
 
 _CITATION = """\
 @inproceedings{kurihara-etal-2022-jglue,
@@ -80,7 +81,7 @@ _URLS = {
 }
 
 
-def features_jsts() -> ds.Features:
+def dataset_info_jsts() -> ds.Features:
     features = ds.Features(
         {
             "sentence_pair_id": ds.Value("string"),
@@ -90,10 +91,16 @@ def features_jsts() -> ds.Features:
             "label": ds.Value("float"),
         }
     )
-    return features
+    return ds.DatasetInfo(
+        description=_DESCRIPTION,
+        citation=_CITATION,
+        homepage=_HOMEPAGE,
+        license=_LICENSE,
+        features=features,
+    )
 
 
-def features_jnli() -> ds.Features:
+def dataset_info_jnli() -> ds.Features:
     features = ds.Features(
         {
             "sentence_pair_id": ds.Value("string"),
@@ -105,10 +112,17 @@ def features_jnli() -> ds.Features:
             ),
         }
     )
-    return features
+    return ds.DatasetInfo(
+        description=_DESCRIPTION,
+        citation=_CITATION,
+        homepage=_HOMEPAGE,
+        license=_LICENSE,
+        features=features,
+        supervised_keys=None,
+    )
 
 
-def features_jsquad() -> ds.Features:
+def dataset_info_jsquad() -> ds.Features:
     features = ds.Features(
         {
             "id": ds.Value("string"),
@@ -121,10 +135,24 @@ def features_jsquad() -> ds.Features:
             "is_impossible": ds.Value("bool"),
         }
     )
-    return features
+    return ds.DatasetInfo(
+        description=_DESCRIPTION,
+        citation=_CITATION,
+        homepage=_HOMEPAGE,
+        license=_LICENSE,
+        features=features,
+        supervised_keys=None,
+        task_templates=[
+            QuestionAnsweringExtractive(
+                question_column="question",
+                context_column="context",
+                answers_column="answers",
+            )
+        ],
+    )
 
 
-def features_jcommonsenseqa() -> ds.Features:
+def dataset_info_jcommonsenseqa() -> ds.Features:
     features = ds.Features(
         {
             "q_id": ds.Value("int64"),
@@ -134,13 +162,22 @@ def features_jcommonsenseqa() -> ds.Features:
             "choice2": ds.Value("string"),
             "choice3": ds.Value("string"),
             "choice4": ds.Value("string"),
-            "label": ds.Value("int8"),
+            "label": ds.ClassLabel(
+                num_classes=5,
+                names=["choice0", "choice1", "choice2", "choice3", "choice4"],
+            ),
         }
     )
-    return features
+    return ds.DatasetInfo(
+        description=_DESCRIPTION,
+        citation=_CITATION,
+        homepage=_HOMEPAGE,
+        license=_LICENSE,
+        features=features,
+    )
 
 
-def features_marc_ja() -> ds.Features:
+def dataset_info_marc_ja() -> ds.Features:
     features = ds.Features(
         {
             "sentence": ds.Value("string"),
@@ -150,7 +187,13 @@ def features_marc_ja() -> ds.Features:
             "review_id": ds.Value("string"),
         }
     )
-    return features
+    return ds.DatasetInfo(
+        description=_DESCRIPTION,
+        citation=_CITATION,
+        homepage=_HOMEPAGE,
+        license=_LICENSE,
+        features=features,
+    )
 
 
 class MarcJaConfig(ds.BuilderConfig):
@@ -439,60 +482,118 @@ class JGLUE(ds.GeneratorBasedBuilder):
 
     def _info(self) -> ds.DatasetInfo:
         if self.config.name == "JSTS":
-            features = features_jsts()
+            return dataset_info_jsts()
         elif self.config.name == "JNLI":
-            features = features_jnli()
+            return dataset_info_jnli()
         elif self.config.name == "JSQuAD":
-            features = features_jsquad()
+            return dataset_info_jsquad()
         elif self.config.name == "JCommonsenseQA":
-            features = features_jcommonsenseqa()
+            return dataset_info_jcommonsenseqa()
         elif self.config.name == "MARC-ja":
-            features = features_marc_ja()
+            return dataset_info_marc_ja()
         else:
             raise ValueError(f"Invalid config name: {self.config.name}")
 
-        return ds.DatasetInfo(
-            description=_DESCRIPTION,
-            citation=_CITATION,
-            homepage=_HOMEPAGE,
-            license=_LICENSE,
-            features=features,
-        )
-
-    def _split_generators(self, dl_manager: ds.DownloadManager):
+    def __split_generators_marc_ja(self, dl_manager: ds.DownloadManager):
         file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
 
-        if self.config.name == "MARC-ja":
-            filter_review_id_list = file_paths["filter_review_id_list"]
-            label_conv_review_id_list = file_paths["label_conv_review_id_list"]
+        filter_review_id_list = file_paths["filter_review_id_list"]
+        label_conv_review_id_list = file_paths["label_conv_review_id_list"]
 
-            split_dfs = preprocess_for_marc_ja(
-                config=self.config,
-                data_file_path=file_paths["data"],
-                filter_review_id_list_paths=filter_review_id_list,
-                label_conv_review_id_list_paths=label_conv_review_id_list,
-            )
-            return [
-                ds.SplitGenerator(
-                    name=ds.Split.TRAIN,
-                    gen_kwargs={"split_df": split_dfs["train"]},
-                ),
-                ds.SplitGenerator(
-                    name=ds.Split.VALIDATION,
-                    gen_kwargs={"split_df": split_dfs["valid"]},
-                ),
-            ]
+        split_dfs = preprocess_for_marc_ja(
+            config=self.config,
+            data_file_path=file_paths["data"],
+            filter_review_id_list_paths=filter_review_id_list,
+            label_conv_review_id_list_paths=label_conv_review_id_list,
+        )
+        return [
+            ds.SplitGenerator(
+                name=ds.Split.TRAIN,
+                gen_kwargs={"split_df": split_dfs["train"]},
+            ),
+            ds.SplitGenerator(
+                name=ds.Split.VALIDATION,
+                gen_kwargs={"split_df": split_dfs["valid"]},
+            ),
+        ]
+
+    def __split_generators(self, dl_manager: ds.DownloadManager):
+        file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
+        return [
+            ds.SplitGenerator(
+                name=ds.Split.TRAIN,
+                gen_kwargs={"file_path": file_paths["train"]},
+            ),
+            ds.SplitGenerator(
+                name=ds.Split.VALIDATION,
+                gen_kwargs={"file_path": file_paths["valid"]},
+            ),
+        ]
+
+    def _split_generators(self, dl_manager: ds.DownloadManager):
+        if self.config.name == "MARC-ja":
+            return self.__split_generators_marc_ja(dl_manager)
         else:
-            return [
-                ds.SplitGenerator(
-                    name=ds.Split.TRAIN,
-                    gen_kwargs={"file_path": file_paths["train"]},
-                ),
-                ds.SplitGenerator(
-                    name=ds.Split.VALIDATION,
-                    gen_kwargs={"file_path": file_paths["valid"]},
-                ),
-            ]
+            return self.__split_generators(dl_manager)
+
+    def __generate_examples_marc_ja(self, split_df: Optional[pd.DataFrame] = None):
+        if split_df is None:
+            raise ValueError(f"Invalid preprocessing for {self.config.name}")
+
+        instances = split_df.to_dict(orient="records")
+        for i, data_dict in enumerate(instances):
+            yield i, data_dict
+
+    def __generate_examples_jsquad(self, file_path: Optional[str] = None):
+        if file_path is None:
+            raise ValueError(f"Invalid argument for {self.config.name}")
+
+        with open(file_path, "r") as rf:
+            json_data = json.load(rf)
+
+        for json_dict in json_data["data"]:
+            title = json_dict["title"]
+            paragraphs = json_dict["paragraphs"]
+
+            for paragraph in paragraphs:
+                context = paragraph["context"]
+                questions = paragraph["qas"]
+
+                for question_dict in questions:
+                    q_id = question_dict["id"]
+                    question = question_dict["question"]
+                    answers = question_dict["answers"]
+                    is_impossible = question_dict["is_impossible"]
+
+                    example_dict = {
+                        "id": q_id,
+                        "title": title,
+                        "context": context,
+                        "question": question,
+                        "answers": answers,
+                        "is_impossible": is_impossible,
+                    }
+
+                    yield q_id, example_dict
+
+    def __generate_examples_jcommonsenseqa(self, file_path: Optional[str] = None):
+        if file_path is None:
+            raise ValueError(f"Invalid argument for {self.config.name}")
+
+        with open(file_path, "r") as rf:
+            for i, line in enumerate(rf):
+                json_dict = json.loads(line)
+                json_dict["label"] = f"choice{json_dict['label']}"
+                yield i, json_dict
+
+    def __generate_examples(self, file_path: Optional[str] = None):
+        if file_path is None:
+            raise ValueError(f"Invalid argument for {self.config.name}")
+
+        with open(file_path, "r") as rf:
+            for i, line in enumerate(rf):
+                json_dict = json.loads(line)
+                yield i, json_dict
 
     def _generate_examples(
         self,
@@ -500,46 +601,13 @@ class JGLUE(ds.GeneratorBasedBuilder):
         split_df: Optional[pd.DataFrame] = None,
     ):
         if self.config.name == "MARC-ja":
-            if split_df is None:
-                raise ValueError(f"Invalid preprocessing for {self.config.name}")
+            yield from self.__generate_examples_marc_ja(split_df)
 
-            instances = split_df.to_dict(orient="records")
-            for i, data_dict in enumerate(instances):
-                yield i, data_dict
+        elif self.config.name == "JSQuAD":
+            yield from self.__generate_examples_jsquad(file_path)
+
+        elif self.config.name == "JCommonsenseQA":
+            yield from self.__generate_examples_jcommonsenseqa(file_path)
 
         else:
-            if file_path is None:
-                raise ValueError(f"Invalid argument for {self.config.name}")
-
-            if self.config.name == "JSQuAD":
-                with open(file_path, "r") as rf:
-                    json_data = json.load(rf)
-
-                for json_dict in json_data["data"]:
-                    title = json_dict["title"]
-                    paragraphs = json_dict["paragraphs"]
-                    for paragraph in paragraphs:
-                        context = paragraph["context"]
-                        questions = paragraph["qas"]
-                        for question_dict in questions:
-                            q_id = question_dict["id"]
-                            question = question_dict["question"]
-                            answers = question_dict["answers"]
-                            is_impossible = question_dict["is_impossible"]
-
-                            example_dict = {
-                                "id": q_id,
-                                "title": title,
-                                "context": context,
-                                "question": question,
-                                "answers": answers,
-                                "is_impossible": is_impossible,
-                            }
-
-                            yield q_id, example_dict
-
-            else:
-                with open(file_path, "r") as rf:
-                    for i, line in enumerate(rf):
-                        json_dict = json.loads(line)
-                        yield i, json_dict
+            yield from self.__generate_examples(file_path)
