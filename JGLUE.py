@@ -109,21 +109,17 @@ def features_jnli() -> ds.Features:
 
 
 def features_jsquad() -> ds.Features:
-    title = ds.Value("string")
-    answers = ds.Sequence(
-        {"text": ds.Value("string"), "answer_start": ds.Value("int64")}
-    )
-    qas = ds.Sequence(
+    features = ds.Features(
         {
-            "question": ds.Value("string"),
             "id": ds.Value("string"),
-            "answers": answers,
+            "title": ds.Value("string"),
+            "context": ds.Value("string"),
+            "question": ds.Value("string"),
+            "answers": ds.Sequence(
+                {"text": ds.Value("string"), "answer_start": ds.Value("int32")}
+            ),
             "is_impossible": ds.Value("bool"),
         }
-    )
-    paragraphs = ds.Sequence({"qas": qas, "context": ds.Value("string")})
-    features = ds.Features(
-        {"data": ds.Sequence({"title": title, "paragraphs": paragraphs})}
     )
     return features
 
@@ -515,7 +511,35 @@ class JGLUE(ds.GeneratorBasedBuilder):
             if file_path is None:
                 raise ValueError(f"Invalid argument for {self.config.name}")
 
-            with open(file_path, "r") as rf:
-                for i, line in enumerate(rf):
-                    json_dict = json.loads(line)
-                    yield i, json_dict
+            if self.config.name == "JSQuAD":
+                with open(file_path, "r") as rf:
+                    json_data = json.load(rf)
+
+                for json_dict in json_data["data"]:
+                    title = json_dict["title"]
+                    paragraphs = json_dict["paragraphs"]
+                    for paragraph in paragraphs:
+                        context = paragraph["context"]
+                        questions = paragraph["qas"]
+                        for question_dict in questions:
+                            q_id = question_dict["id"]
+                            question = question_dict["question"]
+                            answers = question_dict["answers"]
+                            is_impossible = question_dict["is_impossible"]
+
+                            example_dict = {
+                                "id": q_id,
+                                "title": title,
+                                "context": context,
+                                "question": question,
+                                "answers": answers,
+                                "is_impossible": is_impossible,
+                            }
+
+                            yield q_id, example_dict
+
+            else:
+                with open(file_path, "r") as rf:
+                    for i, line in enumerate(rf):
+                        json_dict = json.loads(line)
+                        yield i, json_dict
