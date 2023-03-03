@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, Union
 
 import datasets as ds
 import pandas as pd
-from datasets.tasks import QuestionAnsweringExtractive, TextClassification
+from datasets.tasks import QuestionAnsweringExtractive
 
 _CITATION = """\
 @inproceedings{kurihara-etal-2022-jglue,
