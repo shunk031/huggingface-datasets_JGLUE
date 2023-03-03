@@ -223,12 +223,12 @@ dataset = load_dataset("shunk031/JGLUE", name="JSQuAD")
 print(dataset)
 # DatasetDict({
 #     train: Dataset({
-#         features: ['data'],
-#         num_rows: 1
+#         features: ['id', 'title', 'context', 'question', 'answers', 'is_impossible'],
+#         num_rows: 62859
 #     })
 #     validation: Dataset({
-#         features: ['data'],
-#         num_rows: 1
+#         features: ['id', 'title', 'context', 'question', 'answers', 'is_impossible'],
+#         num_rows: 4442
 #     })
 # })
 ```
@@ -237,28 +237,15 @@ An example of the JSQuAD looks as follows:
 
 ```json
 {
-  "title": "東海道新幹線 (Tokaido Shinkansen)",
-  "paragraphs": [
-    {
-      "qas": [
-        {
-          "question": "2020 年（令和 2 年）3 月現在、東京駅 - 新大阪駅間の最高速度はどのくらいか。 (What is the maximum speed between Tokyo Station and Shin-Osaka Station as of March 2020?)",
-          "id": "a1531320p0q0",
-          "answers": [
-            {
-              "text": "285 km/h",
-              "answer_start": 182
-            }
-          ],
-          "is_impossible": false
-        },
-        {
-          .. 
-        }
-      ],
-      "context": "東海道新幹線 [SEP] 1987 年（昭和 62 年）4 月 1 日の国鉄分割民営化により、JR 東海が運営を継承した。西日本旅客鉄道（JR 西日本）が継承した山陽新幹線とは相互乗り入れが行われており、東海道新幹線区間のみで運転される列車にも JR 西日本所有の車両が使用されることがある。2020 年（令和 2 年）3 月現在、東京駅 - 新大阪駅間の所要時間は最速 2 時間 21 分、最高速度 285 km/h で運行されている。"
-    }
-  ]
+  "id": "a1531320p0q0", 
+  "title": "東海道新幹線", 
+  "context": "東海道新幹線 [SEP] 1987 年（昭和 62 年）4 月 1 日の国鉄分割民営化により、JR 東海が運営を継承した。西日本旅客鉄道（JR 西日本）が継承した山陽新幹線とは相互乗り入れが行われており、東海道新幹線区間のみで運転される列車にも JR 西日本所有の車両が使用されることがある。2020 年（令和 2 年）3 月現在、東京駅 - 新大阪駅間の所要時間は最速 2 時間 21 分、最高速度 285 km/h で運行されている。", 
+  "question": "2020 年（令和 2 年）3 月現在、東京駅 - 新大阪駅間の最高速度はどのくらいか。", 
+  "answers": {
+    "text": ["285 km/h"], 
+    "answer_start": [182]
+  }, 
+  "is_impossible": false
 }
 ```
 
