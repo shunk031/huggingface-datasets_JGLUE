@@ -580,7 +580,7 @@ class JGLUE(ds.GeneratorBasedBuilder):
         if file_path is None:
             raise ValueError(f"Invalid argument for {self.config.name}")
 
-        with open(file_path, "r") as rf:
+        with open(file_path, "r", encoding="utf-8") as rf:
             for i, line in enumerate(rf):
                 json_dict = json.loads(line)
                 json_dict["label"] = f"choice{json_dict['label']}"
@@ -590,7 +590,7 @@ class JGLUE(ds.GeneratorBasedBuilder):
         if file_path is None:
             raise ValueError(f"Invalid argument for {self.config.name}")
 
-        with open(file_path, "r") as rf:
+        with open(file_path, "r", encoding="utf-8") as rf:
             for i, line in enumerate(rf):
                 json_dict = json.loads(line)
                 yield i, json_dict
