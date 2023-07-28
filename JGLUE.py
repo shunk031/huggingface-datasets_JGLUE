@@ -406,8 +406,7 @@ def preprocess_for_marc_ja(
         df = df[["review_body", "star_rating", "review_id"]]
     except KeyError as err:
         raise ValueError(
-            f"Invalid data loaded from {data_file_path}:\n"
-            f"{df.head()}"
+            f"Invalid data loaded from {data_file_path}:\n{df.head()}"
         ) from err
 
     # rename columns
