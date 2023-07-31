@@ -7,6 +7,9 @@ from typing import Dict, List, Optional, Union
 import datasets as ds
 import pandas as pd
 from datasets.tasks import QuestionAnsweringExtractive
+import logging
+
+logger = logging.getLogger(__name__)
 
 _CITATION = """\
 @inproceedings{kurihara-etal-2022-jglue,
@@ -500,12 +503,26 @@ class JGLUE(ds.GeneratorBasedBuilder):
         filter_review_id_list = file_paths["filter_review_id_list"]
         label_conv_review_id_list = file_paths["label_conv_review_id_list"]
 
-        split_dfs = preprocess_for_marc_ja(
-            config=self.config,
-            data_file_path=file_paths["data"],
-            filter_review_id_list_paths=filter_review_id_list,
-            label_conv_review_id_list_paths=label_conv_review_id_list,
-        )
+        try:
+            split_dfs = preprocess_for_marc_ja(
+                config=self.config,
+                data_file_path=file_paths["data"],
+                filter_review_id_list_paths=filter_review_id_list,
+                label_conv_review_id_list_paths=label_conv_review_id_list,
+            )
+        except KeyError as err:
+            from urllib.parse import urljoin
+
+            logger.warning(err)
+
+            base_url = "https://huggingface.co/datasets/shunk031/JGLUE/resolve/refs%2Fconvert%2Fparquet/MARC-ja/"
+            marcja_parquet_urls = {
+                "train": urljoin(base_url, "jglue-train.parquet"),
+                "valid": urljoin(base_url, "jglue-validation.parquet"),
+            }
+            file_paths = dl_manager.download_and_extract(marcja_parquet_urls)
+            split_dfs = {k: pd.read_parquet(v) for k, v in file_paths.items()}
+
         return [
             ds.SplitGenerator(
                 name=ds.Split.TRAIN,
