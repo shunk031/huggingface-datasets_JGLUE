@@ -275,11 +275,11 @@ def get_filter_review_id_list(
     filter_review_id_list = {}
 
     if filter_review_id_list_valid is not None:
-        with open(filter_review_id_list_valid, "r") as rf:
+        with open(filter_review_id_list_valid, "r", encoding="utf-8") as rf:
             filter_review_id_list["valid"] = [line.rstrip() for line in rf]
 
     if filter_review_id_list_test is not None:
-        with open(filter_review_id_list_test, "r") as rf:
+        with open(filter_review_id_list_test, "r", encoding="utf-8") as rf:
             filter_review_id_list["test"] = [line.rstrip() for line in rf]
 
     return filter_review_id_list
@@ -296,13 +296,13 @@ def get_label_conv_review_id_list(
     label_conv_review_id_list: Dict[str, Dict[str, str]] = {}
 
     if label_conv_review_id_list_valid is not None:
-        with open(label_conv_review_id_list_valid, "r") as rf:
+        with open(label_conv_review_id_list_valid, "r", encoding="utf-8") as rf:
             label_conv_review_id_list["valid"] = {
                 row[0]: row[1] for row in csv.reader(rf)
             }
 
     if label_conv_review_id_list_test is not None:
-        with open(label_conv_review_id_list_test, "r") as rf:
+        with open(label_conv_review_id_list_test, "r", encoding="utf-8") as rf:
             label_conv_review_id_list["test"] = {
                 row[0]: row[1] for row in csv.reader(rf)
             }
@@ -565,7 +565,7 @@ class JGLUE(ds.GeneratorBasedBuilder):
         if file_path is None:
             raise ValueError(f"Invalid argument for {self.config.name}")
 
-        with open(file_path, "r") as rf:
+        with open(file_path, "r", encoding="utf-8") as rf:
             json_data = json.load(rf)
 
         for json_dict in json_data["data"]:
