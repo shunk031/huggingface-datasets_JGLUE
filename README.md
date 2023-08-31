@@ -37,6 +37,9 @@ task_ids:
 [![CI](https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/ci.yaml/badge.svg)](https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/ci.yaml)
 [![ACL2020 2020.acl-main.419](https://img.shields.io/badge/LREC2022-2022.lrec--1.317-red)](https://aclanthology.org/2022.lrec-1.317)
 
+This dataset loading script is developed on [GitHub](https://github.com/shunk031/huggingface-datasets_JGLUE).
+Please feel free to open an [issue](https://github.com/shunk031/huggingface-datasets_JGLUE/issues/new/choose) or [pull request](https://github.com/shunk031/huggingface-datasets_JGLUE/pulls) on GitHub.
+
 ## Table of Contents
 - [Table of Contents](#table-of-contents)
 - [Dataset Description](#dataset-description)
