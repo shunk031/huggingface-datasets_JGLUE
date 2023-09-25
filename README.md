@@ -16,6 +16,7 @@ source_datasets:
 - original
 tags:
 - MARC
+- CoLA
 - STS
 - NLI
 - SQuAD
@@ -72,7 +73,7 @@ Please feel free to open an [issue](https://github.com/shunk031/huggingface-data
 
 ### Dataset Summary
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#jglue-japanese-general-language-understanding-evaluation):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#jglue-japanese-general-language-understanding-evaluation):
 
 > JGLUE, Japanese General Language Understanding Evaluation, is built to measure the general NLU ability in Japanese. JGLUE has been constructed from scratch without translation. We hope that JGLUE will facilitate NLU research in Japanese.
 
@@ -80,7 +81,7 @@ From [the official README.md](https://github.com/yahoojapan/JGLUE#jglue-japanese
 
 ### Supported Tasks and Leaderboards
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#tasksdatasets):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#tasksdatasets):
 
 > JGLUE consists of the tasks of text classification, sentence pair classification, and QA. Each task consists of multiple datasets. 
 
@@ -88,37 +89,43 @@ From [the official README.md](https://github.com/yahoojapan/JGLUE#tasksdatasets)
 
 ##### MARC-ja
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#marc-ja):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#marc-ja):
 
 > MARC-ja is a dataset of the text classification task. This dataset is based on the Japanese portion of [Multilingual Amazon Reviews Corpus (MARC)](https://docs.opendata.aws/amazon-reviews-ml/readme.html) ([Keung+, 2020](https://aclanthology.org/2020.emnlp-main.369/)).
 
+##### JCoLA
+
+From [JCoLA's README.md'](https://github.com/osekilab/JCoLA#jcola-japanese-corpus-of-linguistic-acceptability)
+
+> JCoLA (Japanese Corpus of Linguistic Accept010 ability) is a novel dataset for targeted syntactic evaluations of language models in Japanese, which consists of 10,020 sentences with acceptability judgments by linguists. The sentences are manually extracted from linguistics journals, handbooks and textbooks. JCoLA is included in [JGLUE benchmark](https://github.com/yahoojapan/JGLUE) (Kurihara et al., 2022).
+
 ##### JSTS
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#jsts):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#jsts):
 
 > JSTS is a Japanese version of the STS (Semantic Textual Similarity) dataset. STS is a task to estimate the semantic similarity of a sentence pair. The sentences in JSTS and JNLI (described below) are extracted from the Japanese version of the MS COCO Caption Dataset, [the YJ Captions Dataset](https://github.com/yahoojapan/YJCaptions) ([Miyazaki and Shimizu, 2016](https://aclanthology.org/P16-1168/)).
 
 ##### JNLI
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#jnli):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#jnli):
 
 > JNLI is a Japanese version of the NLI (Natural Language Inference) dataset. NLI is a task to recognize the inference relation that a premise sentence has to a hypothesis sentence. The inference relations are entailment, contradiction, and neutral.
 
 ##### JSQuAD
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#jsquad):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#jsquad):
 
 > JSQuAD is a Japanese version of [SQuAD](https://rajpurkar.github.io/SQuAD-explorer/) ([Rajpurkar+, 2018](https://aclanthology.org/P18-2124/)), one of the datasets of reading comprehension. Each instance in the dataset consists of a question regarding a given context (Wikipedia article) and its answer. JSQuAD is based on SQuAD 1.1 (there are no unanswerable questions). We used [the Japanese Wikipedia dump](https://dumps.wikimedia.org/jawiki/) as of 20211101.
 
 ##### JCommonsenseQA
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#jcommonsenseqa):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#jcommonsenseqa):
 
 > JCommonsenseQA is a Japanese version of [CommonsenseQA](https://www.tau-nlp.org/commonsenseqa) ([Talmor+, 2019](https://aclanthology.org/N19-1421/)), which is a multiple-choice question answering dataset that requires commonsense reasoning ability. It is built using crowdsourcing with seeds extracted from the knowledge base [ConceptNet](https://conceptnet.io/).
 
 #### Leaderboard
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#leaderboard):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#leaderboard):
 
 > A leaderboard will be made public soon. The test set will be released at that time.
 
@@ -299,7 +306,7 @@ An example of the JCommonsenseQA looks as follows:
 
 ##### Explanation for `yjcaptions_id`
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#explanation-for-yjcaptions_id), there are the following two cases:
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#explanation-for-yjcaptions_id), there are the following two cases:
 
 1. sentence pairs in one image: `(image id)-(sentence1 id)-(sentence2 id)`
     - e.g., 723-844-847
@@ -337,7 +344,7 @@ From [the official README.md](https://github.com/yahoojapan/JGLUE#explanation-fo
 
 ### Data Splits
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md#tasksdatasets):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md#tasksdatasets):
 
 > Only train/dev sets are available now, and the test set will be available after the leaderboard is made public.
 
@@ -446,7 +453,7 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 #### Who are the annotators?
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md#tasksdatasets):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md#tasksdatasets):
 
 > We use Yahoo! Crowdsourcing for all crowdsourcing tasks in constructing the datasets.
 
