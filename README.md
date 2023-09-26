@@ -95,7 +95,7 @@ From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#marc-ja):
 
 ##### JCoLA
 
-From [JCoLA's README.md'](https://github.com/osekilab/JCoLA#jcola-japanese-corpus-of-linguistic-acceptability)
+From [JCoLA's README.md](https://github.com/osekilab/JCoLA#jcola-japanese-corpus-of-linguistic-acceptability)
 
 > JCoLA (Japanese Corpus of Linguistic Accept010 ability) is a novel dataset for targeted syntactic evaluations of language models in Japanese, which consists of 10,020 sentences with acceptability judgments by linguists. The sentences are manually extracted from linguistics journals, handbooks and textbooks. JCoLA is included in [JGLUE benchmark](https://github.com/yahoojapan/JGLUE) (Kurihara et al., 2022).
 
@@ -157,6 +157,59 @@ print(dataset)
 #         num_rows: 5654
 #     })
 # })
+```
+
+#### JCoLA
+
+```python
+from datasets import load_dataset
+
+dataset = load_dataset("shunk031/JGLUE", name="JCoLA")
+
+print(dataset)
+# DatasetDict({
+#     train: Dataset({
+#         features: ['uid', 'source', 'label', 'diacritic', 'sentence', 'original', 'translation', 'gloss', 'simple', 'linguistic_phenomenon'],
+#         num_rows: 6919
+#     })
+#     validation: Dataset({
+#         features: ['uid', 'source', 'label', 'diacritic', 'sentence', 'original', 'translation', 'gloss', 'simple', 'linguistic_phenomenon'],
+#         num_rows: 865
+#     })
+#     validation_out_of_domain: Dataset({
+#         features: ['uid', 'source', 'label', 'diacritic', 'sentence', 'original', 'translation', 'gloss', 'simple', 'linguistic_phenomenon'],
+#         num_rows: 685
+#     })
+# })
+```
+
+An example of the JCoLA dataset (validation - out of domain annotated) looks as follows:
+
+```json
+{
+  "uid": 9109,
+  "source": "Asano_and_Ura_2010",
+  "label": 1,
+  "diacritic": "g",
+  "sentence": "太郎のゴミの捨て方について話した。",
+  "original": "太郎のゴミの捨て方",
+  "translation": "‘The way (for Taro) to throw out garbage’",
+  "gloss": true,
+  "simple": false,
+  "linguistic_phenomenon": {
+    "argument_structure": true,
+    "binding": false,
+    "filler_gap": false,
+    "ellipsis": false,
+    "island_effects": false,
+    "negative_polarity_items_licensing": false,
+    "quantifier": false,
+    "control_raising": false,
+    "verbal_agreement": false,
+    "nominal_structure": false,
+    "morphology": false
+  }
+}
 ```
 
 #### JSTS
@@ -314,6 +367,32 @@ From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#explanation-for-yjc
 2. sentence pairs in two images: `(image id of sentence1)_(image id of sentence2)-(sentence1 id)-(sentence2 id)`
     - e.g., 91337_217583-96105-91680
 
+#### JCoLA
+
+From [JCoLA's README.md](https://github.com/osekilab/JCoLA#data-description) and [JCoLA's paper](https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E7-1.pdf)
+
+- `uid`: unique id of the sentence
+- `source`: author and the year of publication of the source article
+- `label`: acceptability judgement label (0 for unacceptable, 1 for acceptable)
+- `diacritic`: acceptability judgement as originally notated in the source article
+- `sentence`: sentence (modified by the author if needed)
+- `original`: original sentence as presented in the source article
+- `translation`: English translation of the sentence as presentend in the source article (if any)
+- `gloss`: gloss of the sentence as presented in the source article (if any)
+- `simple`: [More Information Needed]
+- `linguistic_phenomenon`
+  - `argument_structure`: 動詞の項構造に関わる容認性判断
+  - `binding`: 名詞句の束縛関係に関する容認性判断
+  - `filler_gap`: 移動した構成素と移動元の空所の依存関係に関する容認性判断
+  - `ellipsis`: 文中の要素の省略可能性に関する容認性判断
+  - `island effects`: 島の制約に関する容認性判断
+  - `negative_polarity_items_licensing`: 否定極性項目 (negative polarity items, NPIs) の出現環境に関する容認性判断
+  - `quantifiers`: 数量詞 (quantifiers) の分布に関する容認性判断
+  - `control_raising`: コントロール (control) や繰り上げ (raising) 構文に関する容認性判断
+  - `verbal_agreement`: BLiMP では、主語と動詞の数の一致に関する例文を、Subject-verb agreement としてまとめている。JCoLA では、より一般に主語の性質が動詞の形態に反映される現象や、動詞が主語の性質に制約を与えるような現象に関する容認性判断を含む中分類として Verbal Agreement を採用した
+  - `nominal_structure`: BLiMP では、限定詞 (determiner) と名詞の一致に関する例文を、Determiner-noun agreement としてまとめている。JCoLA では、より一般に名詞句の内部構造に関わる容認性判断を含む中分類として、Nominal structure を採用した
+  - `morphology`: BLiMP では、動詞の過去分詞の活用が正しく行われているかに関する例文を、Irregular forms としてまとめている。JCoLA では、より幅広く形態論に関する容認性判断を含む中分類として Morphology を採用した
+
 #### JNLI
 
 - `sentence_pair_id`: ID of the sentence pair
@@ -351,19 +430,19 @@ From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md
 | Task                         | Dataset        | Train   | Dev   | Test  |
 |------------------------------|----------------|--------:|------:|------:|
 | Text Classification          | MARC-ja        | 187,528 | 5,654 | 5,639 |
-|                              | JCoLA&dagger;  | -       | -     | -     |
+|                              | JCoLA          | 6,919   | 865&dagger; / 685&ddagger; | - |
 | Sentence Pair Classification | JSTS           | 12,451  | 1,457 | 1,589 |
 |                              | JNLI           | 20,073  | 2,434 | 2,508 |
 | Question Answering           | JSQuAD         | 62,859  | 4,442 | 4,420 |
 |                              | JCommonsenseQA | 8,939   | 1,119 | 1,118 |
 
-> &dagger;JCoLA will be added soon.
+> JCoLA: &dagger; in domain. &ddagger; out of domain.
 
 ## Dataset Creation
 
 ### Curation Rationale
 
-From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
+From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > JGLUE is designed to cover a wide range of GLUE and SuperGLUE tasks and consists of three kinds of tasks: text classification, sentence pair classification, and question answering.
 
@@ -383,7 +462,7 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 ##### MARC-ja
 
-From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
+From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > As one of the text classification datasets, we build a dataset based on the Multilingual Amazon Reviews Corpus (MARC) (Keung et al., 2020). MARC is a multilingual corpus of product reviews with 5-level star ratings (1-5) on the Amazon shopping site. This corpus covers six languages, including English and Japanese. For JGLUE, we use the Japanese part of MARC and to make it easy for both humans and computers to judge a class label, we cast the text classification task as a binary classification task, where 1- and 2-star ratings are converted to “negative”, and 4 and 5 are converted to “positive”. We do not use reviews with a 3-star rating. 
 
@@ -391,9 +470,26 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > We obtained 5,654 and 5,639 instances for the dev and test data, respectively, through the above procedure. For the training data, we extracted 187,528 instances directly from MARC without performing the cleaning procedure because of the large number of training instances. The statistics of MARC-ja are listed in Table 2. For the evaluation metric for MARC-ja, we use accuracy because it is a binary classification task of texts.
 
+##### JCoLA
+
+From [JCoLA's paper](https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E7-1.pdf):
+
+> ### JCoLA の構築
+> #### 3.1 データ収集
+>言語モデルが理論言語学で重要とされている統語現象を捉えられているかを検証するため、本研究では東アジア・東南アジア言語の言語学のジャーナルとして著名な JEAL (Journal of East Asian Linguistics) に 10 年間（2006 年から 2015 年）で掲載された 133 本の論文の中で、特に日本語の統語論を扱っている論文 28 本を対象とし、その論文で提示されている全てのデータポイント（2,323 文）を抽出した。ここでの「全てのデータポイント」は、脚注や付録を含む本文の全ての日本語の例文の中で、構造分析のために提示された例文を除いたもののことである。
+> #### 3.2 タイプ分類
+> 単純な全データポイントに対する正解率による比較に終始することなく、個別の統語現象ごとのモデル評価を可能にするため、前節で抽出した例文を統語現象のタイプによって分類した。本研究では、全データポイントを 3 つの粒度で分類する。分類の名称については、BLiMP [14] を参考にした。まず、大分類として各データポイントが問題としている容認性判断の性質や、本文中での提示のされ方に基づいて 8 種類に分類した。次に、中分類として各データポイントがどのような統語現象を扱っているのかに基づく分類を行った (𝑝ℎ𝑒𝑛𝑜𝑚𝑒𝑛𝑜𝑛)。中分類は、基本的に BLiMP における 12 の現象に Others を加えたものであるが、今回対象とする日本語のデータに合わせてその一部を変更した（付録 A）。また、データポイントが二つ以上の現象に分類されうると判断された場合には、𝑝ℎ𝑒𝑛𝑜𝑚𝑒𝑛𝑜𝑛-2 を用意して分類した。ただし、言語モデルの統語現象ごとの評価の際には 𝑝ℎ𝑒𝑛𝑜𝑚𝑒𝑛𝑜𝑛の分類が優先される。最後に、小分類として中分類 (𝑝ℎ𝑒𝑛𝑜𝑚𝑒𝑛𝑜𝑛) よりさらに粒度の細かい、個別の統語現象ごとに 39 種類の分類を行った (𝑝𝑎𝑟𝑎𝑑𝑖𝑔𝑚)。これにより、エラー分析の際により粒度の細かい分析が可能となる。
+> #### 3.3 ミニマルペアの作成
+> まず、前節でタイプ分類が行われたデータセットのうち、以下の全ての条件を満たすものを抽出
+する。
+> • 非文として提示されている（? や*などのマーキングがされている）もの。ただし、? などのマーキングがされつつも、本文中で正例としてみなされているものは除く。
+> • 大分類が variation、repeat、footnote、appendix のいずれでもないもの。
+> • 中分類が others でないもの。
+> 次に、言語学の論文において提示された全ての負例には、対応する正例が存在するという仮定のもと [20]、以上により抜き出された負例のぞれぞれに対応する正例を、論文の中から採用するか、本文の内容を確認しつつ筆者が作例することにより構築した。この際、解釈により容認度が変わる例は、JCoLA に含めない不適切な例として、ミニマルペア構築の対象外とした。また、重複している例文や、語彙項目が異なるのみで検証対象が同じである例文も除外した。以上の手順により、合計で 369 ペアのミニマルペアが作成された（表 2、付録 B）。
+
 ##### JSTS and JNLI
 
-From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
+From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > For the sentence pair classification datasets, we construct a semantic textual similarity (STS) dataset, JSTS, and a natural language inference (NLI) dataset, JNLI.
 
@@ -418,7 +514,7 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 ##### JSQuAD
 
-From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
+From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > As QA datasets, we build a Japanese version of SQuAD (Rajpurkar et al., 2016), one of the datasets of reading comprehension, and a Japanese version ofCommonsenseQA, which is explained in the next section.
 
@@ -430,7 +526,7 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 ##### JCommonsenseQA
 
-From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
+From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > ### Overview
 > JCommonsenseQA is a Japanese version of CommonsenseQA (Talmor et al., 2019), which consists of five choice QA to evaluate commonsense reasoning ability. Figure 3 shows examples of JCommonsenseQA. In the same way as CommonsenseQA, JCommonsenseQA is built using crowdsourcing with seeds extracted from the knowledge base ConceptNet (Speer et al., 2017). ConceptNet is a multilingual knowledge base that consists of triplets of two concepts and their relation. The triplets are directional and represented as (source concept, relation, target concept), for example (bullet train, AtLocation, station).
@@ -465,7 +561,7 @@ From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md
 
 ### Social Impact of Dataset
 
-From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
+From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > We build a Japanese NLU benchmark, JGLUE, from scratch without translation to measure the general NLU ability in Japanese. We hope that JGLUE will facilitate NLU research in Japanese.
 
@@ -487,13 +583,17 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 - Keung, Phillip, et al. "The Multilingual Amazon Reviews Corpus." Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP). 2020.
 
+#### JCoLA
+
+- 染谷ら，"日本語版 CoLA の構築，" 言語処理学会第 28 回年次大会，2022.
+
 #### JSTS and JNLI
 
 - Miyazaki, Takashi, and Nobuyuki Shimizu. "Cross-lingual image caption generation." Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers). 2016.
 
 #### JSQuAD
 
-The authors curated the original data for JSQuAD from the Japanese wikipedia dump.
+The JGLUE's 'authors curated the original data for JSQuAD from the Japanese wikipedia dump.
 
 #### JCommonsenseQA
 
@@ -501,38 +601,71 @@ In the same way as CommonsenseQA, JCommonsenseQA is built using crowdsourcing wi
 
 ### Licensing Information
 
+#### JGLUE
+
+From [JGLUE's README.md'](https://github.com/yahoojapan/JGLUE#license):
+
 > This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+
+#### JCoLA
+
+From [JCoLA's README.md'](https://github.com/osekilab/JCoLA#license):
+
+> The text in this corpus is excerpted from the published works, and copyright (where applicable) remains with the original authors or publishers. We expect that research use within Japan is legal under fair use, but make no guarantee of this.
 
 ### Citation Information
 
+#### JGLUE
+
 ```bibtex
-@inproceedings{kurihara-etal-2022-jglue,
-    title = "{JGLUE}: {J}apanese General Language Understanding Evaluation",
-    author = "Kurihara, Kentaro  and
-      Kawahara, Daisuke  and
-      Shibata, Tomohide",
-    booktitle = "Proceedings of the Thirteenth Language Resources and Evaluation Conference",
-    month = jun,
-    year = "2022",
-    address = "Marseille, France",
-    publisher = "European Language Resources Association",
-    url = "https://aclanthology.org/2022.lrec-1.317",
-    pages = "2957--2966",
-    abstract = "To develop high-performance natural language understanding (NLU) models, it is necessary to have a benchmark to evaluate and analyze NLU ability from various perspectives. While the English NLU benchmark, GLUE, has been the forerunner, benchmarks are now being released for languages other than English, such as CLUE for Chinese and FLUE for French; but there is no such benchmark for Japanese. We build a Japanese NLU benchmark, JGLUE, from scratch without translation to measure the general NLU ability in Japanese. We hope that JGLUE will facilitate NLU research in Japanese.",
+@inproceedings{kurihara-lrec-2022-jglue,
+  title={JGLUE: Japanese general language understanding evaluation},
+  author={Kurihara, Kentaro and Kawahara, Daisuke and Shibata, Tomohide},
+  booktitle={Proceedings of the Thirteenth Language Resources and Evaluation Conference},
+  pages={2957--2966},
+  year={2022},
+  url={https://aclanthology.org/2022.lrec-1.317/}
 }
 ```
 
 ```bibtex
-@InProceedings{Kurihara_nlp2022,
-  author = 	"栗原健太郎 and 河原大輔 and 柴田知秀",
-  title = 	"JGLUE: 日本語言語理解ベンチマーク",
-  booktitle = 	"言語処理学会第 28 回年次大会",
-  year =	"2022",
-  url = "https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E8-4.pdf"
-  note= "in Japanese"
+@inproceedings{kurihara-nlp-2022-jglue,
+  title={JGLUE: 日本語言語理解ベンチマーク},
+  author={栗原健太郎 and 河原大輔 and 柴田知秀},
+  booktitle={言語処理学会第 28 回年次大会},
+  pages={2023--2028},
+  year={2022},
+  url={https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E8-4.pdf},
+  note={in Japanese}
+}
+```
+
+#### MARC-ja
+
+```bibtex
+@inproceedings{marc_reviews,
+  title={The Multilingual Amazon Reviews Corpus},
+  author={Keung, Phillip and Lu, Yichao and Szarvas, György and Smith, Noah A.},
+  booktitle={Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing},
+  year={2020}
+}
+```
+
+#### JCoLA
+
+```bibtex
+@inproceedings{someya-nlp-2022-jcola,
+  title={日本語版 CoLA の構築},
+  author={染谷 大河 and 大関 洋平},
+  booktitle={言語処理学会第 28 回年次大会},
+  pages={1872--1877},
+  year={2022},
+  url={https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E7-1.pdf},
+  note={in Japanese}
 }
 ```
 
 ### Contributions
 
-Thanks to [Kentaro Kurihara](https://twitter.com/kkurihara_cs), [Daisuke Kawahara](https://twitter.com/daisukekawahar1), and [Tomohide Shibata](https://twitter.com/stomohide) for creating this dataset.
+Thanks to [Kentaro Kurihara](https://twitter.com/kkurihara_cs), [Daisuke Kawahara](https://twitter.com/daisukekawahar1), and [Tomohide Shibata](https://twitter.com/stomohide) for creating JGLUE dataset.
+Thanks to [Taiga Someya](https://twitter.com/T0a8i0g9a) for creating JCoLA dataset.
