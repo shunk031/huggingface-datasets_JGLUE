@@ -44,7 +44,6 @@ _LICENSE = """\
 This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.\
 """
 
-
 _DESCRIPTION_CONFIGS = {
     "MARC-ja": "MARC-ja is a dataset of the text classification task. This dataset is based on the Japanese portion of Multilingual Amazon Reviews Corpus (MARC) (Keung+, 2020).",
     "JSTS": "JSTS is a Japanese version of the STS (Semantic Textual Similarity) dataset. STS is a task to estimate the semantic similarity of a sentence pair.",
@@ -52,7 +51,6 @@ _DESCRIPTION_CONFIGS = {
     "JSQuAD": "JSQuAD is a Japanese version of SQuAD (Rajpurkar+, 2016), one of the datasets of reading comprehension.",
     "JCommonsenseQA": "JCommonsenseQA is a Japanese version of CommonsenseQA (Talmor+, 2019), which is a multiple-choice question answering dataset that requires commonsense reasoning ability.",
 }
-
 
 _URLS = {
     "MARC-ja": {
