@@ -35,7 +35,7 @@ jobs:
 
       - name: Lint
         run: |
-          poetry ruff check .
+          poetry run ruff check .
 
       - name: Type check
         run: |
