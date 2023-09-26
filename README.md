@@ -431,6 +431,10 @@ From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md
 
 > Only train/dev sets are available now, and the test set will be available after the leaderboard is made public.
 
+From [JCoLA's paper](https://arxiv.org/abs/2309.12676):
+
+> The in-domain data is split into training data (6,919 instances), development data (865 instances), and test data (865 instances). On the other hand, the out-of-domain data is only used for evaluation, and divided into development data (685 instances) and test data (686 instances).
+
 | Task                         | Dataset        | Train   | Dev   | Test  |
 |------------------------------|----------------|--------:|------:|------:|
 | Text Classification          | MARC-ja        | 187,528 | 5,654 | 5,639 |
@@ -458,7 +462,7 @@ From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 #### Who are the source language producers?
 
-- The source language producers are users of Amazon (MARC-ja), crowd-workers of Yahoo! Crowdsourcing (JSTS, JNLI and JCommonsenseQA), writers of the Japanese Wikipedia (JSQuAD).
+- The source language producers are users of Amazon (MARC-ja), crowd-workers of [Yahoo! Crowdsourcing](https://crowdsourcing.yahoo.co.jp/) (JSTS, JNLI and JCommonsenseQA), writers of the Japanese Wikipedia (JSQuAD), crowd-workers of [Lancers](https://www.lancers.jp/).
 
 ### Annotations
 
@@ -550,6 +554,10 @@ From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md
 
 > We use Yahoo! Crowdsourcing for all crowdsourcing tasks in constructing the datasets.
 
+From [JCoLA's paper](https://arxiv.org/abs/2309.12676):
+
+> As a reference for the upper limit of accuracy in JCoLA, human acceptability judgment experiments were conducted on Lancers2 with a subset of the JCoLA data.
+
 ### Personal and Sensitive Information
 
 [More Information Needed]
@@ -568,7 +576,9 @@ From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 ### Other Known Limitations
 
-[More Information Needed]
+From [JCoLA's paper](https://arxiv.org/abs/2309.12676):
+
+> All the sentences included in JCoLA have been extracted from textbooks, handbooks and journal articles on theoretical syntax. Therefore, those sentences are guaranteed to be theoretically meaningful, making JCoLA a challenging dataset. However, the distribution of linguistic phenomena directly reflects that of the source literature and thus turns out to be extremely skewed. Indeed, as can be seen in Table 3, while the number of sentences exceeds 100 for most linguistic phenomena, there are several linguistic phenomena for which there are only about 10 sentences. In addition, since it is difficult to force language models to interpret sentences given specific contexts, those sentences whose unacceptability depends on contexts were inevitably removed from JCoLA. This removal process resulted in the deletion of unacceptable sentences from some linguistic phenomena (such as ellipsis), consequently skewing the balance between acceptable and unacceptable sentences (with a higher proportion of acceptable sentences).
 
 ## Additional Information
 
