@@ -1,10 +1,9 @@
 [tool.poetry]
 name = "huggingface-datasets-jglue"
 version = "0.1.0"
-description = ""
+description = "Dataset loading script for JGLUE: Japanese General Language Understanding Evaluation"
 authors = ["Shunsuke KITADA <shunsuke.kitada.0831@gmail.com>"]
 readme = "README.md"
-packages = []
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -14,11 +13,9 @@ mecab-python3 = "^1.0.6"
 pyknp = "^0.6.1"
 mojimoji = "^0.0.12"
 
-
 [tool.poetry.group.dev.dependencies]
+ruff = "^0.0.241"
 black = "^23.1.0"
-isort = "^5.12.0"
-flake8 = "^6.0.0"
 mypy = "^1.0.1"
 pytest = "^7.2.1"
 

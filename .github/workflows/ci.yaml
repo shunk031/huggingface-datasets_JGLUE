@@ -35,7 +35,7 @@ jobs:
 
       - name: Lint
         run: |
-          poetry run flake8 . --ignore=E501,W503,E203
+          poetry ruff check .
 
       - name: Type check
         run: |
