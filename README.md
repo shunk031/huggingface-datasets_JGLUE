@@ -16,6 +16,7 @@ source_datasets:
 - original
 tags:
 - MARC
+- CoLA
 - STS
 - NLI
 - SQuAD
@@ -72,7 +73,7 @@ Please feel free to open an [issue](https://github.com/shunk031/huggingface-data
 
 ### Dataset Summary
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#jglue-japanese-general-language-understanding-evaluation):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#jglue-japanese-general-language-understanding-evaluation):
 
 > JGLUE, Japanese General Language Understanding Evaluation, is built to measure the general NLU ability in Japanese. JGLUE has been constructed from scratch without translation. We hope that JGLUE will facilitate NLU research in Japanese.
 
@@ -80,7 +81,7 @@ From [the official README.md](https://github.com/yahoojapan/JGLUE#jglue-japanese
 
 ### Supported Tasks and Leaderboards
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#tasksdatasets):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#tasksdatasets):
 
 > JGLUE consists of the tasks of text classification, sentence pair classification, and QA. Each task consists of multiple datasets. 
 
@@ -88,37 +89,43 @@ From [the official README.md](https://github.com/yahoojapan/JGLUE#tasksdatasets)
 
 ##### MARC-ja
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#marc-ja):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#marc-ja):
 
 > MARC-ja is a dataset of the text classification task. This dataset is based on the Japanese portion of [Multilingual Amazon Reviews Corpus (MARC)](https://docs.opendata.aws/amazon-reviews-ml/readme.html) ([Keung+, 2020](https://aclanthology.org/2020.emnlp-main.369/)).
 
+##### JCoLA
+
+From [JCoLA's README.md](https://github.com/osekilab/JCoLA#jcola-japanese-corpus-of-linguistic-acceptability)
+
+> JCoLA (Japanese Corpus of Linguistic Accept010 ability) is a novel dataset for targeted syntactic evaluations of language models in Japanese, which consists of 10,020 sentences with acceptability judgments by linguists. The sentences are manually extracted from linguistics journals, handbooks and textbooks. JCoLA is included in [JGLUE benchmark](https://github.com/yahoojapan/JGLUE) (Kurihara et al., 2022).
+
 ##### JSTS
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#jsts):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#jsts):
 
 > JSTS is a Japanese version of the STS (Semantic Textual Similarity) dataset. STS is a task to estimate the semantic similarity of a sentence pair. The sentences in JSTS and JNLI (described below) are extracted from the Japanese version of the MS COCO Caption Dataset, [the YJ Captions Dataset](https://github.com/yahoojapan/YJCaptions) ([Miyazaki and Shimizu, 2016](https://aclanthology.org/P16-1168/)).
 
 ##### JNLI
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#jnli):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#jnli):
 
 > JNLI is a Japanese version of the NLI (Natural Language Inference) dataset. NLI is a task to recognize the inference relation that a premise sentence has to a hypothesis sentence. The inference relations are entailment, contradiction, and neutral.
 
 ##### JSQuAD
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#jsquad):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#jsquad):
 
 > JSQuAD is a Japanese version of [SQuAD](https://rajpurkar.github.io/SQuAD-explorer/) ([Rajpurkar+, 2018](https://aclanthology.org/P18-2124/)), one of the datasets of reading comprehension. Each instance in the dataset consists of a question regarding a given context (Wikipedia article) and its answer. JSQuAD is based on SQuAD 1.1 (there are no unanswerable questions). We used [the Japanese Wikipedia dump](https://dumps.wikimedia.org/jawiki/) as of 20211101.
 
 ##### JCommonsenseQA
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#jcommonsenseqa):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#jcommonsenseqa):
 
 > JCommonsenseQA is a Japanese version of [CommonsenseQA](https://www.tau-nlp.org/commonsenseqa) ([Talmor+, 2019](https://aclanthology.org/N19-1421/)), which is a multiple-choice question answering dataset that requires commonsense reasoning ability. It is built using crowdsourcing with seeds extracted from the knowledge base [ConceptNet](https://conceptnet.io/).
 
 #### Leaderboard
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#leaderboard):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#leaderboard):
 
 > A leaderboard will be made public soon. The test set will be released at that time.
 
@@ -150,6 +157,63 @@ print(dataset)
 #         num_rows: 5654
 #     })
 # })
+```
+
+#### JCoLA
+
+```python
+from datasets import load_dataset
+
+dataset = load_dataset("shunk031/JGLUE", name="JCoLA")
+
+print(dataset)
+# DatasetDict({
+#     train: Dataset({
+#         features: ['uid', 'source', 'label', 'diacritic', 'sentence', 'original', 'translation', 'gloss', 'simple', 'linguistic_phenomenon'],
+#         num_rows: 6919
+#     })
+#     validation: Dataset({
+#         features: ['uid', 'source', 'label', 'diacritic', 'sentence', 'original', 'translation', 'gloss', 'simple', 'linguistic_phenomenon'],
+#         num_rows: 865
+#     })
+#     validation_out_of_domain: Dataset({
+#         features: ['uid', 'source', 'label', 'diacritic', 'sentence', 'original', 'translation', 'gloss', 'simple', 'linguistic_phenomenon'],
+#         num_rows: 685
+#     })
+#     validation_out_of_domain_annotated: Dataset({
+#         features: ['uid', 'source', 'label', 'diacritic', 'sentence', 'original', 'translation', 'gloss', 'simple', 'linguistic_phenomenon'],
+#         num_rows: 685
+#     })
+# })
+```
+
+An example of the JCoLA dataset (validation - out of domain annotated) looks as follows:
+
+```json
+{
+  "uid": 9109,
+  "source": "Asano_and_Ura_2010",
+  "label": 1,
+  "diacritic": "g",
+  "sentence": "太郎のゴミの捨て方について話した。",
+  "original": "太郎のゴミの捨て方",
+  "translation": "‘The way (for Taro) to throw out garbage’",
+  "gloss": true,
+  "linguistic_phenomenon": {
+    "argument_structure": true,
+    "binding": false,
+    "control_raising": false,
+    "ellipsis": false,
+    "filler_gap": false,
+    "island_effects": false,
+    "morphology": false,
+    "nominal_structure": false,
+    "negative_polarity_concord_items": false,
+    "quantifier": false,
+    "verbal_agreement": false,
+    "simple": false
+  }
+}
 ```
 
 #### JSTS
@@ -299,13 +363,39 @@ An example of the JCommonsenseQA looks as follows:
 
 ##### Explanation for `yjcaptions_id`
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE#explanation-for-yjcaptions_id), there are the following two cases:
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#explanation-for-yjcaptions_id), there are the following two cases:
 
 1. sentence pairs in one image: `(image id)-(sentence1 id)-(sentence2 id)`
     - e.g., 723-844-847
     - a sentence id starting with "g" means a sentence generated by a crowdworker (e.g., 69501-75698-g103): only for JNLI
 2. sentence pairs in two images: `(image id of sentence1)_(image id of sentence2)-(sentence1 id)-(sentence2 id)`
     - e.g., 91337_217583-96105-91680
+
+#### JCoLA
+
+From [JCoLA's README.md](https://github.com/osekilab/JCoLA#data-description) and [JCoLA's paper](https://arxiv.org/abs/2309.12676)
+
+- `uid`: unique id of the sentence
+- `source`: author and the year of publication of the source article
+- `label`: acceptability judgement label (0 for unacceptable, 1 for acceptable)
+- `diacritic`: acceptability judgement as originally notated in the source article
+- `sentence`: sentence (modified by the author if needed)
+- `original`: original sentence as presented in the source article
+- `translation`: English translation of the sentence as presentend in the source article (if any)
+- `gloss`: gloss of the sentence as presented in the source article (if any)
+- `linguistic_phenomenon`
+  - `argument_structure`: acceptability judgements based on the order of arguments and case marking
+  - `binding`: acceptability judgements based on the binding of noun phrases
+  - `control_raising`: acceptability judgements based on predicates that are categorized as control or raising
+  - `ellipsis`: acceptability judgements based on the possibility of omitting elements in the sentences
+  - `filler_gap`: acceptability judgements based on the dependency between the moved element and the gap
+  - `island effects`: acceptability judgements based on the restrictions on filler-gap dependencies such as wh-movements
+  - `morphology`: acceptability judgements based on the morphology
+  - `nominal_structure`: acceptability judgements based on the internal structure of noun phrases
+  - `negative_polarity_concord_items`: acceptability judgements based on the restrictions on where negative polarity/concord items (NPIs/NCIs) can appear
+  - `quantifiers`: acceptability judgements based on the distribution of quantifiers such as floating quantifiers
+  - `verbal_agreement`: acceptability judgements based on the dependency between subjects and verbs
+  - `simple`: acceptability judgements that do not have marked syntactic structures
 
 #### JNLI
 
@@ -337,26 +427,30 @@ From [the official README.md](https://github.com/yahoojapan/JGLUE#explanation-fo
 
 ### Data Splits
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md#tasksdatasets):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md#tasksdatasets):
 
 > Only train/dev sets are available now, and the test set will be available after the leaderboard is made public.
+
+From [JCoLA's paper](https://arxiv.org/abs/2309.12676):
+
+> The in-domain data is split into training data (6,919 instances), development data (865 instances), and test data (865 instances). On the other hand, the out-of-domain data is only used for evaluation, and divided into development data (685 instances) and test data (686 instances).
 
 | Task                         | Dataset        | Train   | Dev   | Test  |
 |------------------------------|----------------|--------:|------:|------:|
 | Text Classification          | MARC-ja        | 187,528 | 5,654 | 5,639 |
-|                              | JCoLA&dagger;  | -       | -     | -     |
+|                              | JCoLA          | 6,919   | 865&dagger; / 685&ddagger; | 865&dagger; / 685&ddagger; |
 | Sentence Pair Classification | JSTS           | 12,451  | 1,457 | 1,589 |
 |                              | JNLI           | 20,073  | 2,434 | 2,508 |
 | Question Answering           | JSQuAD         | 62,859  | 4,442 | 4,420 |
 |                              | JCommonsenseQA | 8,939   | 1,119 | 1,118 |
 
-> &dagger;JCoLA will be added soon.
+> JCoLA: &dagger; in domain. &ddagger; out of domain.
 
 ## Dataset Creation
 
 ### Curation Rationale
 
-From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
+From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > JGLUE is designed to cover a wide range of GLUE and SuperGLUE tasks and consists of three kinds of tasks: text classification, sentence pair classification, and question answering.
 
@@ -368,7 +462,7 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 #### Who are the source language producers?
 
-- The source language producers are users of Amazon (MARC-ja), crowd-workers of Yahoo! Crowdsourcing (JSTS, JNLI and JCommonsenseQA), writers of the Japanese Wikipedia (JSQuAD).
+- The source language producers are users of Amazon (MARC-ja), crowd-workers of [Yahoo! Crowdsourcing](https://crowdsourcing.yahoo.co.jp/) (JSTS, JNLI and JCommonsenseQA), writers of the Japanese Wikipedia (JSQuAD), crowd-workers of [Lancers](https://www.lancers.jp/).
 
 ### Annotations
 
@@ -376,7 +470,7 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 ##### MARC-ja
 
-From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
+From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > As one of the text classification datasets, we build a dataset based on the Multilingual Amazon Reviews Corpus (MARC) (Keung et al., 2020). MARC is a multilingual corpus of product reviews with 5-level star ratings (1-5) on the Amazon shopping site. This corpus covers six languages, including English and Japanese. For JGLUE, we use the Japanese part of MARC and to make it easy for both humans and computers to judge a class label, we cast the text classification task as a binary classification task, where 1- and 2-star ratings are converted to “negative”, and 4 and 5 are converted to “positive”. We do not use reviews with a 3-star rating. 
 
@@ -384,9 +478,19 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > We obtained 5,654 and 5,639 instances for the dev and test data, respectively, through the above procedure. For the training data, we extracted 187,528 instances directly from MARC without performing the cleaning procedure because of the large number of training instances. The statistics of MARC-ja are listed in Table 2. For the evaluation metric for MARC-ja, we use accuracy because it is a binary classification task of texts.
 
+##### JCoLA
+
+From [JCoLA's paper](https://arxiv.org/abs/2309.12676):
+
+> ### 3 JCoLA
+> In this study, we introduce JCoLA (Japanese Corpus of Linguistic Acceptability), which will be the first large-scale acceptability judgment task dataset focusing on Japanese. JCoLA consists of sentences from textbooks and handbooks on Japanese syntax, as well as from journal articles on Japanese syntax that are published in JEAL (Journal of East Asian Linguistics), one of the prestigious journals in theoretical linguistics.
+
+> #### 3.1 Data Collection
+> Sentences in JCoLA were collected from prominent textbooks and handbooks focusing on Japanese syntax. In addition to the main text, example sentences included in the footnotes were also considered for collection. We also collected acceptability judgments from journal articles on Japanese syntax published in JEAL (Journal of East Asian Linguistics): one of the prestigious journals in the-oretical linguistics. Specifically, we examined all the articles published in JEAL between 2006 and 2015 (133 papers in total), and extracted 2,252 acceptability judgments from 26 papers on Japanese syntax (Table 2). Acceptability judgments include sentences in appendices and footnotes, but not sentences presented for analyses of syntactic structures (e.g. sentences with brackets to show their syntactic structures). As a result, a total of 11,984 example. sentences were collected. Using this as a basis, JCoLA was constructed through the methodology explained in the following sections.
+
 ##### JSTS and JNLI
 
-From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
+From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > For the sentence pair classification datasets, we construct a semantic textual similarity (STS) dataset, JSTS, and a natural language inference (NLI) dataset, JNLI.
 
@@ -411,7 +515,7 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 ##### JSQuAD
 
-From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
+From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > As QA datasets, we build a Japanese version of SQuAD (Rajpurkar et al., 2016), one of the datasets of reading comprehension, and a Japanese version ofCommonsenseQA, which is explained in the next section.
 
@@ -423,7 +527,7 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 ##### JCommonsenseQA
 
-From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
+From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > ### Overview
 > JCommonsenseQA is a Japanese version of CommonsenseQA (Talmor et al., 2019), which consists of five choice QA to evaluate commonsense reasoning ability. Figure 3 shows examples of JCommonsenseQA. In the same way as CommonsenseQA, JCommonsenseQA is built using crowdsourcing with seeds extracted from the knowledge base ConceptNet (Speer et al., 2017). ConceptNet is a multilingual knowledge base that consists of triplets of two concepts and their relation. The triplets are directional and represented as (source concept, relation, target concept), for example (bullet train, AtLocation, station).
@@ -446,9 +550,13 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 #### Who are the annotators?
 
-From [the official README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md#tasksdatasets):
+From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md#tasksdatasets):
 
 > We use Yahoo! Crowdsourcing for all crowdsourcing tasks in constructing the datasets.
+
+From [JCoLA's paper](https://arxiv.org/abs/2309.12676):
+
+> As a reference for the upper limit of accuracy in JCoLA, human acceptability judgment experiments were conducted on Lancers2 with a subset of the JCoLA data.
 
 ### Personal and Sensitive Information
 
@@ -458,7 +566,7 @@ From [the official README.md](https://github.com/yahoojapan/JGLUE/blob/main/READ
 
 ### Social Impact of Dataset
 
-From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
+From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 > We build a Japanese NLU benchmark, JGLUE, from scratch without translation to measure the general NLU ability in Japanese. We hope that JGLUE will facilitate NLU research in Japanese.
 
@@ -468,7 +576,9 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 ### Other Known Limitations
 
-[More Information Needed]
+From [JCoLA's paper](https://arxiv.org/abs/2309.12676):
+
+> All the sentences included in JCoLA have been extracted from textbooks, handbooks and journal articles on theoretical syntax. Therefore, those sentences are guaranteed to be theoretically meaningful, making JCoLA a challenging dataset. However, the distribution of linguistic phenomena directly reflects that of the source literature and thus turns out to be extremely skewed. Indeed, as can be seen in Table 3, while the number of sentences exceeds 100 for most linguistic phenomena, there are several linguistic phenomena for which there are only about 10 sentences. In addition, since it is difficult to force language models to interpret sentences given specific contexts, those sentences whose unacceptability depends on contexts were inevitably removed from JCoLA. This removal process resulted in the deletion of unacceptable sentences from some linguistic phenomena (such as ellipsis), consequently skewing the balance between acceptable and unacceptable sentences (with a higher proportion of acceptable sentences).
 
 ## Additional Information
 
@@ -480,13 +590,17 @@ From [the original paper](https://aclanthology.org/2022.lrec-1.317/):
 
 - Keung, Phillip, et al. "The Multilingual Amazon Reviews Corpus." Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP). 2020.
 
+#### JCoLA
+
+- Someya, Sugimoto, and Oseki. "JCoLA: Japanese Corpus of Linguistic Acceptability." arxiv preprint arXiv:2309.12676 (2023).
+
 #### JSTS and JNLI
 
 - Miyazaki, Takashi, and Nobuyuki Shimizu. "Cross-lingual image caption generation." Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers). 2016.
 
 #### JSQuAD
 
-The authors curated the original data for JSQuAD from the Japanese wikipedia dump.
+The JGLUE's 'authors curated the original data for JSQuAD from the Japanese wikipedia dump.
 
 #### JCommonsenseQA
 
@@ -494,38 +608,94 @@ In the same way as CommonsenseQA, JCommonsenseQA is built using crowdsourcing wi
 
 ### Licensing Information
 
+#### JGLUE
+
+From [JGLUE's README.md'](https://github.com/yahoojapan/JGLUE#license):
+
 > This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+
+#### JCoLA
+
+From [JCoLA's README.md'](https://github.com/osekilab/JCoLA#license):
+
+> The text in this corpus is excerpted from the published works, and copyright (where applicable) remains with the original authors or publishers. We expect that research use within Japan is legal under fair use, but make no guarantee of this.
 
 ### Citation Information
 
+#### JGLUE
+
 ```bibtex
-@inproceedings{kurihara-etal-2022-jglue,
-    title = "{JGLUE}: {J}apanese General Language Understanding Evaluation",
-    author = "Kurihara, Kentaro  and
-      Kawahara, Daisuke  and
-      Shibata, Tomohide",
-    booktitle = "Proceedings of the Thirteenth Language Resources and Evaluation Conference",
-    month = jun,
-    year = "2022",
-    address = "Marseille, France",
-    publisher = "European Language Resources Association",
-    url = "https://aclanthology.org/2022.lrec-1.317",
-    pages = "2957--2966",
-    abstract = "To develop high-performance natural language understanding (NLU) models, it is necessary to have a benchmark to evaluate and analyze NLU ability from various perspectives. While the English NLU benchmark, GLUE, has been the forerunner, benchmarks are now being released for languages other than English, such as CLUE for Chinese and FLUE for French; but there is no such benchmark for Japanese. We build a Japanese NLU benchmark, JGLUE, from scratch without translation to measure the general NLU ability in Japanese. We hope that JGLUE will facilitate NLU research in Japanese.",
+@inproceedings{kurihara-lrec-2022-jglue,
+  title={JGLUE: Japanese general language understanding evaluation},
+  author={Kurihara, Kentaro and Kawahara, Daisuke and Shibata, Tomohide},
+  booktitle={Proceedings of the Thirteenth Language Resources and Evaluation Conference},
+  pages={2957--2966},
+  year={2022},
+  url={https://aclanthology.org/2022.lrec-1.317/}
 }
 ```
 
 ```bibtex
-@InProceedings{Kurihara_nlp2022,
-  author = 	"栗原健太郎 and 河原大輔 and 柴田知秀",
-  title = 	"JGLUE: 日本語言語理解ベンチマーク",
-  booktitle = 	"言語処理学会第 28 回年次大会",
-  year =	"2022",
-  url = "https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E8-4.pdf"
-  note= "in Japanese"
+@inproceedings{kurihara-nlp-2022-jglue,
+  title={JGLUE: 日本語言語理解ベンチマーク},
+  author={栗原健太郎 and 河原大輔 and 柴田知秀},
+  booktitle={言語処理学会第 28 回年次大会},
+  pages={2023--2028},
+  year={2022},
+  url={https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E8-4.pdf},
+  note={in Japanese}
+}
+```
+
+#### MARC-ja
+
+```bibtex
+@inproceedings{marc_reviews,
+  title={The Multilingual Amazon Reviews Corpus},
+  author={Keung, Phillip and Lu, Yichao and Szarvas, György and Smith, Noah A.},
+  booktitle={Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing},
+  year={2020}
+}
+```
+
+#### JCoLA
+
+```bibtex
+@article{someya-arxiv-2023-jcola,
+  title={JCoLA: Japanese Corpus of Linguistic Acceptability}, 
+  author={Taiga Someya and Yushi Sugimoto and Yohei Oseki},
+  year={2023},
+  eprint={2309.12676},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL}
+}
+```
+
+```bibtex
+@inproceedings{someya-nlp-2022-jcola,
+  title={日本語版 CoLA の構築},
+  author={染谷 大河 and 大関 洋平},
+  booktitle={言語処理学会第 28 回年次大会},
+  pages={1872--1877},
+  year={2022},
+  url={https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E7-1.pdf},
+  note={in Japanese}
+}
+```
+
+#### JSTS and JNLI
+
+```bibtex
+@inproceedings{miyazaki2016cross,
+  title={Cross-lingual image caption generation},
+  author={Miyazaki, Takashi and Shimizu, Nobuyuki},
+  booktitle={Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages={1780--1790},
+  year={2016}
 }
 ```
 
 ### Contributions
 
-Thanks to [Kentaro Kurihara](https://twitter.com/kkurihara_cs), [Daisuke Kawahara](https://twitter.com/daisukekawahar1), and [Tomohide Shibata](https://twitter.com/stomohide) for creating this dataset.
+Thanks to [Kentaro Kurihara](https://twitter.com/kkurihara_cs), [Daisuke Kawahara](https://twitter.com/daisukekawahar1), and [Tomohide Shibata](https://twitter.com/stomohide) for creating JGLUE dataset.
+Thanks to [Taiga Someya](https://twitter.com/T0a8i0g9a) for creating JCoLA dataset.
