@@ -45,3 +45,16 @@ def test_load_marc_ja(
 
     assert dataset["train"].num_rows == expected_num_train
     assert dataset["validation"].num_rows == expected_num_valid
+
+
+def test_load_jcola(
+    dataset_path: str,
+    dataset_name: str = "JCoLA",
+    expected_num_train: int = 6919,
+    expected_num_valid: int = 865,
+    expected_num_valid_ood: int = 685,
+):
+    dataset = ds.load_dataset(path=dataset_path, name=dataset_name)
+    assert dataset["train"].num_rows == expected_num_train
+    assert dataset["validation"].num_rows == expected_num_valid
+    assert dataset["validation_out_of_domain"].num_rows == expected_num_valid_ood

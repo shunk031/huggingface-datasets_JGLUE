@@ -3,7 +3,8 @@ import logging
 import random
 import string
 import warnings
-from typing import Dict, List, Optional, Union
+from dataclasses import dataclass
+from typing import Dict, List, Literal, Optional
 
 import datasets as ds
 import pandas as pd
@@ -30,6 +31,16 @@ _CITATION = """\
   url={https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E8-4.pdf},
   note={in Japanese}
 }
+
+@inproceedings{someya-nlp-2022-jcola,
+  title={日本語版 CoLA の構築},
+  author={染谷 大河 and 大関 洋平},
+  booktitle={言語処理学会第28回年次大会},
+  pages={1872--1877},
+  year={2022},
+  url={https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E7-1.pdf},
+  note={in Japanese}
+}
 """
 
 _DESCRIPTION = """\
@@ -38,7 +49,8 @@ is built to measure the general NLU ability in Japanese. JGLUE has been construc
 from scratch without translation. We hope that JGLUE will facilitate NLU research in Japanese.\
 """
 
-_HOMEPAGE = "https://github.com/yahoojapan/JGLUE"
+_JGLUE_HOMEPAGE = "https://github.com/yahoojapan/JGLUE"
+_JCOLA_HOMEPAGE = "https://github.com/osekilab/JCoLA"
 
 _LICENSE = """\
 This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.\
@@ -46,6 +58,7 @@ This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 Intern
 
 _DESCRIPTION_CONFIGS = {
     "MARC-ja": "MARC-ja is a dataset of the text classification task. This dataset is based on the Japanese portion of Multilingual Amazon Reviews Corpus (MARC) (Keung+, 2020).",
+    "JCoLA": "JCoLA (Japanese Corpus of Linguistic Accept010 ability) is a novel dataset for targeted syntactic evaluations of language models in Japanese, which consists of 10,020 sentences with acceptability judgments by linguists.",
     "JSTS": "JSTS is a Japanese version of the STS (Semantic Textual Similarity) dataset. STS is a task to estimate the semantic similarity of a sentence pair.",
     "JNLI": "JNLI is a Japanese version of the NLI (Natural Language Inference) dataset. NLI is a task to recognize the inference relation that a premise sentence has to a hypothesis sentence.",
     "JSQuAD": "JSQuAD is a Japanese version of SQuAD (Rajpurkar+, 2016), one of the datasets of reading comprehension.",
@@ -60,6 +73,22 @@ _URLS = {
         },
         "label_conv_review_id_list": {
             "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/preprocess/marc-ja/data/label_conv_review_id_list/valid.txt",
+        },
+    },
+    "JCoLA": {
+        "train": {
+            "in_domain": {
+                "json": "https://raw.githubusercontent.com/osekilab/JCoLA/main/data/jcola-v1.0/in_domain_train-v1.0.json",
+            }
+        },
+        "valid": {
+            "in_domain": {
+                "json": "https://raw.githubusercontent.com/osekilab/JCoLA/main/data/jcola-v1.0/in_domain_valid-v1.0.json",
+            },
+            "out_of_domain": {
+                "json": "https://raw.githubusercontent.com/osekilab/JCoLA/main/data/jcola-v1.0/out_of_domain_valid-v1.0.json",
+                "json_annotated": "https://raw.githubusercontent.com/osekilab/JCoLA/main/data/jcola-v1.0/out_of_domain_valid_annotated-v1.0.json",
+            },
         },
     },
     "JSTS": {
@@ -94,7 +123,7 @@ def dataset_info_jsts() -> ds.DatasetInfo:
     return ds.DatasetInfo(
         description=_DESCRIPTION,
         citation=_CITATION,
-        homepage=_HOMEPAGE,
+        homepage=_JGLUE_HOMEPAGE,
         license=_LICENSE,
         features=features,
     )
@@ -115,7 +144,7 @@ def dataset_info_jnli() -> ds.DatasetInfo:
     return ds.DatasetInfo(
         description=_DESCRIPTION,
         citation=_CITATION,
-        homepage=_HOMEPAGE,
+        homepage=_JGLUE_HOMEPAGE,
         license=_LICENSE,
         features=features,
         supervised_keys=None,
@@ -138,7 +167,7 @@ def dataset_info_jsquad() -> ds.DatasetInfo:
     return ds.DatasetInfo(
         description=_DESCRIPTION,
         citation=_CITATION,
-        homepage=_HOMEPAGE,
+        homepage=_JGLUE_HOMEPAGE,
         license=_LICENSE,
         features=features,
         supervised_keys=None,
@@ -171,8 +200,46 @@ def dataset_info_jcommonsenseqa() -> ds.DatasetInfo:
     return ds.DatasetInfo(
         description=_DESCRIPTION,
         citation=_CITATION,
-        homepage=_HOMEPAGE,
+        homepage=_JGLUE_HOMEPAGE,
         license=_LICENSE,
+        features=features,
+    )
+
+
+def dataset_info_jcola() -> ds.DatasetInfo:
+    features = ds.Features(
+        {
+            "uid": ds.Value("int64"),
+            "source": ds.Value("string"),
+            "label": ds.ClassLabel(
+                num_classes=2,
+                names=["unacceptable", "acceptable"],
+            ),
+            "diacritic": ds.Value("string"),
+            "sentence": ds.Value("string"),
+            "original": ds.Value("string"),
+            "translation": ds.Value("string"),
+            "gloss": ds.Value("bool"),
+            "simple": ds.Value("bool"),
+            "linguistic_phenomenon": {
+                "argument_structure": ds.Value("bool"),
+                "binding": ds.Value("bool"),
+                "filler_gap": ds.Value("bool"),
+                "ellipsis": ds.Value("bool"),
+                "island_effects": ds.Value("bool"),
+                "negative_polarity_items_licensing": ds.Value("bool"),
+                "quantifier": ds.Value("bool"),
+                "control_raising": ds.Value("bool"),
+                "verbal_agreement": ds.Value("bool"),
+                "nominal_structure": ds.Value("bool"),
+                "morphology": ds.Value("bool"),
+            },
+        }
+    )
+    return ds.DatasetInfo(
+        description=_DESCRIPTION,
+        citation=_CITATION,
+        homepage=_JCOLA_HOMEPAGE,
         features=features,
     )
 
@@ -190,52 +257,42 @@ def dataset_info_marc_ja() -> ds.DatasetInfo:
     return ds.DatasetInfo(
         description=_DESCRIPTION,
         citation=_CITATION,
-        homepage=_HOMEPAGE,
+        homepage=_JGLUE_HOMEPAGE,
         license=_LICENSE,
         features=features,
     )
 
 
-class MarcJaConfig(ds.BuilderConfig):
-    def __init__(
-        self,
-        name: str = "MARC-ja",
-        is_han_to_zen: bool = False,
-        max_instance_num: Optional[int] = None,
-        max_char_length: int = 500,
-        is_pos_neg: bool = True,
-        train_ratio: float = 0.94,
-        val_ratio: float = 0.03,
-        test_ratio: float = 0.03,
-        output_testset: bool = False,
-        filter_review_id_list_valid: bool = True,
-        label_conv_review_id_list_valid: bool = True,
-        version: Optional[Union[ds.utils.Version, str]] = ds.utils.Version("0.0.0"),
-        data_dir: Optional[str] = None,
-        data_files: Optional[ds.data_files.DataFilesDict] = None,
-        description: Optional[str] = None,
-    ) -> None:
-        super().__init__(
-            name=name,
-            version=version,
-            data_dir=data_dir,
-            data_files=data_files,
-            description=description,
-        )
-        assert train_ratio + val_ratio + test_ratio == 1.0
+@dataclass
+class JGLUEConfig(ds.BuilderConfig):
+    """Class for JGLUE benchmark configuration"""
 
-        self.train_ratio = train_ratio
-        self.val_ratio = val_ratio
-        self.test_ratio = test_ratio
 
-        self.is_han_to_zen = is_han_to_zen
-        self.max_instance_num = max_instance_num
-        self.max_char_length = max_char_length
-        self.is_pos_neg = is_pos_neg
-        self.output_testset = output_testset
+@dataclass
+class MarcJaConfig(JGLUEConfig):
+    name: str = "MARC-ja"
+    is_han_to_zen: bool = False
+    max_instance_num: Optional[int] = None
+    max_char_length: int = 500
+    is_pos_neg: bool = True
+    train_ratio: float = 0.94
+    val_ratio: float = 0.03
+    test_ratio: float = 0.03
+    output_testset: bool = False
+    filter_review_id_list_valid: bool = True
+    label_conv_review_id_list_valid: bool = True
 
-        self.filter_review_id_list_valid = filter_review_id_list_valid
-        self.label_conv_review_id_list_valid = label_conv_review_id_list_valid
+    def __post_init__(self) -> None:
+        assert self.train_ratio + self.val_ratio + self.test_ratio == 1.0
+
+
+JcolaDomain = Literal["in_domain", "out_of_domain"]
+
+
+@dataclass
+class JcolaConfig(JGLUEConfig):
+    name: str = "JCoLA"
+    domain: JcolaDomain = "in_domain"
 
 
 def get_label(rating: int, is_pos_neg: bool = False) -> Optional[str]:
@@ -451,31 +508,39 @@ def preprocess_for_marc_ja(
 
 
 class JGLUE(ds.GeneratorBasedBuilder):
-    VERSION = ds.Version("1.1.0")
+    JGLUE_VERSION = ds.Version("1.1.0")
+    JCOLA_VERSION = ds.Version("1.0.0")
+
+    BUILDER_CONFIG_CLASS = JGLUEConfig
     BUILDER_CONFIGS = [
         MarcJaConfig(
             name="MARC-ja",
-            version=VERSION,
+            version=JGLUE_VERSION,
             description=_DESCRIPTION_CONFIGS["MARC-ja"],
         ),
-        ds.BuilderConfig(
+        JcolaConfig(
+            name="JCoLA",
+            version=JCOLA_VERSION,
+            description=_DESCRIPTION_CONFIGS["JCoLA"],
+        ),
+        JGLUEConfig(
             name="JSTS",
-            version=VERSION,
+            version=JGLUE_VERSION,
             description=_DESCRIPTION_CONFIGS["JSTS"],
         ),
-        ds.BuilderConfig(
+        JGLUEConfig(
             name="JNLI",
-            version=VERSION,
+            version=JGLUE_VERSION,
             description=_DESCRIPTION_CONFIGS["JNLI"],
         ),
-        ds.BuilderConfig(
+        JGLUEConfig(
             name="JSQuAD",
-            version=VERSION,
+            version=JGLUE_VERSION,
             description=_DESCRIPTION_CONFIGS["JSQuAD"],
         ),
-        ds.BuilderConfig(
+        JGLUEConfig(
             name="JCommonsenseQA",
-            version=VERSION,
+            version=JGLUE_VERSION,
             description=_DESCRIPTION_CONFIGS["JCommonsenseQA"],
         ),
     ]
@@ -489,6 +554,8 @@ class JGLUE(ds.GeneratorBasedBuilder):
             return dataset_info_jsquad()
         elif self.config.name == "JCommonsenseQA":
             return dataset_info_jcommonsenseqa()
+        elif self.config.name == "JCoLA":
+            return dataset_info_jcola()
         elif self.config.name == "MARC-ja":
             return dataset_info_marc_ja()
         else:
@@ -531,8 +598,27 @@ class JGLUE(ds.GeneratorBasedBuilder):
             ),
         ]
 
+    def __split_generators_jcola(self, dl_manager: ds.DownloadManager):
+        file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
+
+        return [
+            ds.SplitGenerator(
+                name=ds.Split.TRAIN,  # type: ignore
+                gen_kwargs={"file_path": file_paths["train"]["in_domain"]["json"]},
+            ),
+            ds.SplitGenerator(
+                name=ds.Split.VALIDATION,  # type: ignore
+                gen_kwargs={"file_path": file_paths["valid"]["in_domain"]["json"]},
+            ),
+            ds.SplitGenerator(
+                name=ds.NamedSplit("validation_out_of_domain"),  # type: ignore
+                gen_kwargs={"file_path": file_paths["valid"]["out_of_domain"]["json"]},
+            ),
+        ]
+
     def __split_generators(self, dl_manager: ds.DownloadManager):
         file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
+
         return [
             ds.SplitGenerator(
                 name=ds.Split.TRAIN,  # type: ignore
@@ -547,6 +633,8 @@ class JGLUE(ds.GeneratorBasedBuilder):
     def _split_generators(self, dl_manager: ds.DownloadManager):
         if self.config.name == "MARC-ja":
             return self.__split_generators_marc_ja(dl_manager)
+        elif self.config.name == "JCoLA":
+            return self.__split_generators_jcola(dl_manager)
         else:
             return self.__split_generators(dl_manager)
 
@@ -557,6 +645,72 @@ class JGLUE(ds.GeneratorBasedBuilder):
         instances = split_df.to_dict(orient="records")
         for i, data_dict in enumerate(instances):
             yield i, data_dict
+
+    def __generate_examples_jcola(self, file_path: Optional[str] = None):
+        if file_path is None:
+            raise ValueError(f"Invalid argument for {self.config.name}")
+
+        def convert_label(json_dict):
+            label_int = json_dict["label"]
+            label_str = "unacceptable" if label_int == 0 else "acceptable"
+            json_dict["label"] = label_str
+            return json_dict
+
+        def convert_addntional_info(json_dict):
+            json_dict["translation"] = json_dict.get("translation")
+            json_dict["gloss"] = json_dict.get("gloss")
+            json_dict["simple"] = json_dict.get("simple")
+            return json_dict
+
+        def convert_phenomenon(json_dict):
+            argument_structure = json_dict.get("Arg. Str.")
+
+            json_dict["linguistic_phenomenon"] = {
+                "argument_structure": json_dict.pop("Arg. Str.")
+                if argument_structure is not None
+                else None,
+                "binding": json_dict.pop("binding")
+                if argument_structure is not None
+                else None,
+                "filler_gap": json_dict.pop("filler-gap")
+                if argument_structure is not None
+                else None,
+                "ellipsis": json_dict.pop("ellipsis")
+                if argument_structure is not None
+                else None,
+                "island_effects": json_dict.pop("island effects")
+                if argument_structure is not None
+                else None,
+                "negative_polarity_items_licensing": json_dict.pop("NPI/NCI")
+                if argument_structure is not None
+                else None,
+                "quantifier": json_dict.pop("quantifier")
+                if argument_structure is not None
+                else None,
+                "control_raising": json_dict.pop("control/raising")
+                if argument_structure is not None
+                else None,
+                "verbal_agreement": json_dict.pop("verbal agr.")
+                if argument_structure is not None
+                else None,
+                "nominal_structure": json_dict.pop("nominal structure")
+                if argument_structure is not None
+                else None,
+                "morphology": json_dict.pop("morphology")
+                if argument_structure is not None
+                else None,
+            }
+            return json_dict
+
+        with open(file_path, "r", encoding="utf-8") as rf:
+            for i, line in enumerate(rf):
+                json_dict = json.loads(line)
+
+                example = convert_label(json_dict)
+                example = convert_addntional_info(example)
+                example = convert_phenomenon(example)
+
+                yield i, example
 
     def __generate_examples_jsquad(self, file_path: Optional[str] = None):
         if file_path is None:
@@ -616,6 +770,9 @@ class JGLUE(ds.GeneratorBasedBuilder):
     ):
         if self.config.name == "MARC-ja":
             yield from self.__generate_examples_marc_ja(split_df)
+
+        elif self.config.name == "JCoLA":
+            yield from self.__generate_examples_jcola(file_path)
 
         elif self.config.name == "JSQuAD":
             yield from self.__generate_examples_jsquad(file_path)
