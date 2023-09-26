@@ -12,7 +12,7 @@ from datasets.tasks import QuestionAnsweringExtractive
 
 logger = logging.getLogger(__name__)
 
-_CITATION = """\
+_JGLUE_CITATION = """\
 @inproceedings{kurihara-lrec-2022-jglue,
   title={JGLUE: Japanese general language understanding evaluation},
   author={Kurihara, Kentaro and Kawahara, Daisuke and Shibata, Tomohide},
@@ -21,7 +21,6 @@ _CITATION = """\
   year={2022},
   url={https://aclanthology.org/2022.lrec-1.317/}
 }
-
 @inproceedings{kurihara-nlp-2022-jglue,
   title={JGLUE: 日本語言語理解ベンチマーク},
   author={栗原健太郎 and 河原大輔 and 柴田知秀},
@@ -31,7 +30,17 @@ _CITATION = """\
   url={https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E8-4.pdf},
   note={in Japanese}
 }
+"""
 
+_JCOLA_CITATION = """\
+@article{someya2023jcola,
+  title={JCoLA: Japanese Corpus of Linguistic Acceptability}, 
+  author={Taiga Someya and Yushi Sugimoto and Yohei Oseki},
+  year={2023},
+  eprint={2309.12676},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL}
+}
 @inproceedings{someya-nlp-2022-jcola,
   title={日本語版 CoLA の構築},
   author={染谷 大河 and 大関 洋平},
@@ -43,6 +52,26 @@ _CITATION = """\
 }
 """
 
+_MARC_JA_CITATION = """\
+@inproceedings{marc_reviews,
+  title={The Multilingual Amazon Reviews Corpus},
+  author={Keung, Phillip and Lu, Yichao and Szarvas, György and Smith, Noah A.},
+  booktitle={Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing},
+  pages={4563--4568},
+  year={2020}
+}
+"""
+
+_JSTS_JNLI_CITATION = """\
+@inproceedings{miyazaki2016cross,
+  title={Cross-lingual image caption generation},
+  author={Miyazaki, Takashi and Shimizu, Nobuyuki},
+  booktitle={Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages={1780--1790},
+  year={2016}
+}
+"""
+
 _DESCRIPTION = """\
 JGLUE, Japanese General Language Understanding Evaluation, \
 is built to measure the general NLU ability in Japanese. JGLUE has been constructed \
@@ -51,8 +80,9 @@ from scratch without translation. We hope that JGLUE will facilitate NLU researc
 
 _JGLUE_HOMEPAGE = "https://github.com/yahoojapan/JGLUE"
 _JCOLA_HOMEPAGE = "https://github.com/osekilab/JCoLA"
+_MARC_JA_HOMEPAGE = "https://registry.opendata.aws/amazon-reviews-ml/"
 
-_LICENSE = """\
+_JGLUE_LICENSE = """\
 This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.\
 """
 
@@ -122,9 +152,9 @@ def dataset_info_jsts() -> ds.DatasetInfo:
     )
     return ds.DatasetInfo(
         description=_DESCRIPTION,
-        citation=_CITATION,
-        homepage=_JGLUE_HOMEPAGE,
-        license=_LICENSE,
+        citation=_JGLUE_CITATION,
+        homepage=f"{_JSTS_JNLI_CITATION}\n{_JGLUE_HOMEPAGE}",
+        license=_JGLUE_LICENSE,
         features=features,
     )
 
@@ -143,9 +173,9 @@ def dataset_info_jnli() -> ds.DatasetInfo:
     )
     return ds.DatasetInfo(
         description=_DESCRIPTION,
-        citation=_CITATION,
-        homepage=_JGLUE_HOMEPAGE,
-        license=_LICENSE,
+        citation=_JGLUE_CITATION,
+        homepage=f"{_JSTS_JNLI_CITATION}\n{_JGLUE_HOMEPAGE}",
+        license=_JGLUE_LICENSE,
         features=features,
         supervised_keys=None,
     )
@@ -166,9 +196,9 @@ def dataset_info_jsquad() -> ds.DatasetInfo:
     )
     return ds.DatasetInfo(
         description=_DESCRIPTION,
-        citation=_CITATION,
+        citation=_JGLUE_CITATION,
         homepage=_JGLUE_HOMEPAGE,
-        license=_LICENSE,
+        license=_JGLUE_LICENSE,
         features=features,
         supervised_keys=None,
         task_templates=[
@@ -199,9 +229,9 @@ def dataset_info_jcommonsenseqa() -> ds.DatasetInfo:
     )
     return ds.DatasetInfo(
         description=_DESCRIPTION,
-        citation=_CITATION,
+        citation=_JGLUE_CITATION,
         homepage=_JGLUE_HOMEPAGE,
-        license=_LICENSE,
+        license=_JGLUE_LICENSE,
         features=features,
     )
 
@@ -220,25 +250,25 @@ def dataset_info_jcola() -> ds.DatasetInfo:
             "original": ds.Value("string"),
             "translation": ds.Value("string"),
             "gloss": ds.Value("bool"),
-            "simple": ds.Value("bool"),
             "linguistic_phenomenon": {
                 "argument_structure": ds.Value("bool"),
                 "binding": ds.Value("bool"),
-                "filler_gap": ds.Value("bool"),
-                "ellipsis": ds.Value("bool"),
-                "island_effects": ds.Value("bool"),
-                "negative_polarity_items_licensing": ds.Value("bool"),
-                "quantifier": ds.Value("bool"),
                 "control_raising": ds.Value("bool"),
-                "verbal_agreement": ds.Value("bool"),
-                "nominal_structure": ds.Value("bool"),
+                "ellipsis": ds.Value("bool"),
+                "filler_gap": ds.Value("bool"),
+                "island_effects": ds.Value("bool"),
                 "morphology": ds.Value("bool"),
+                "nominal_structure": ds.Value("bool"),
+                "negative_polarity_concord_items": ds.Value("bool"),
+                "quantifier": ds.Value("bool"),
+                "verbal_agreement": ds.Value("bool"),
+                "simple": ds.Value("bool"),
             },
         }
     )
     return ds.DatasetInfo(
         description=_DESCRIPTION,
-        citation=_CITATION,
+        citation=f"{_JCOLA_CITATION}\n{_JGLUE_CITATION}",
         homepage=_JCOLA_HOMEPAGE,
         features=features,
     )
@@ -256,9 +286,9 @@ def dataset_info_marc_ja() -> ds.DatasetInfo:
     )
     return ds.DatasetInfo(
         description=_DESCRIPTION,
-        citation=_CITATION,
-        homepage=_JGLUE_HOMEPAGE,
-        license=_LICENSE,
+        citation=f"{_MARC_JA_CITATION}\n{_JGLUE_CITATION}",
+        homepage=_MARC_JA_HOMEPAGE,
+        license=_JGLUE_LICENSE,
         features=features,
     )
 
