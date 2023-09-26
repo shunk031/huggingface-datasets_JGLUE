@@ -700,43 +700,22 @@ class JGLUE(ds.GeneratorBasedBuilder):
         def convert_phenomenon(json_dict):
             argument_structure = json_dict.get("Arg. Str.")
 
+            def json_pop(key):
+                return json_dict.pop(key) if argument_structure is not None else None
+
             json_dict["linguistic_phenomenon"] = {
-                "argument_structure": json_dict.pop("Arg. Str.")
-                if argument_structure is not None
-                else None,
-                "binding": json_dict.pop("binding")
-                if argument_structure is not None
-                else None,
-                "control_raising": json_dict.pop("control/raising")
-                if argument_structure is not None
-                else None,
-                "ellipsis": json_dict.pop("ellipsis")
-                if argument_structure is not None
-                else None,
-                "filler_gap": json_dict.pop("filler-gap")
-                if argument_structure is not None
-                else None,
-                "island_effects": json_dict.pop("island effects")
-                if argument_structure is not None
-                else None,
-                "morphology": json_dict.pop("morphology")
-                if argument_structure is not None
-                else None,
-                "nominal_structure": json_dict.pop("nominal structure")
-                if argument_structure is not None
-                else None,
-                "negative_polarity_concord_items": json_dict.pop("NPI/NCI")
-                if argument_structure is not None
-                else None,
-                "quantifier": json_dict.pop("quantifier")
-                if argument_structure is not None
-                else None,
-                "verbal_agreement": json_dict.pop("verbal agr.")
-                if argument_structure is not None
-                else None,
-                "simple": json_dict.pop("simple")
-                if argument_structure is not None
-                else None,
+                "argument_structure": json_pop("Arg. Str."),
+                "binding": json_pop("binding"),
+                "control_raising": json_pop("control/raising"),
+                "ellipsis": json_pop("ellipsis"),
+                "filler_gap": json_pop("filler-gap"),
+                "island_effects": json_pop("island effects"),
+                "morphology": json_pop("morphology"),
+                "nominal_structure": json_pop("nominal structure"),
+                "negative_polarity_concord_items": json_pop("NPI/NCI"),
+                "quantifier": json_pop("quantifier"),
+                "verbal_agreement": json_pop("verbal agr."),
+                "simple": json_pop("simple"),
             }
             return json_dict
 
