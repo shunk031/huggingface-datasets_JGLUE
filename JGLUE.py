@@ -589,11 +589,11 @@ class JGLUE(ds.GeneratorBasedBuilder):
 
         return [
             ds.SplitGenerator(
-                name=ds.Split.TRAIN,  # type: ignore
+                name=ds.Split.TRAIN,
                 gen_kwargs={"split_df": split_dfs["train"]},
             ),
             ds.SplitGenerator(
-                name=ds.Split.VALIDATION,  # type: ignore
+                name=ds.Split.VALIDATION,
                 gen_kwargs={"split_df": split_dfs["valid"]},
             ),
         ]
@@ -603,16 +603,22 @@ class JGLUE(ds.GeneratorBasedBuilder):
 
         return [
             ds.SplitGenerator(
-                name=ds.Split.TRAIN,  # type: ignore
+                name=ds.Split.TRAIN,
                 gen_kwargs={"file_path": file_paths["train"]["in_domain"]["json"]},
             ),
             ds.SplitGenerator(
-                name=ds.Split.VALIDATION,  # type: ignore
+                name=ds.Split.VALIDATION,
                 gen_kwargs={"file_path": file_paths["valid"]["in_domain"]["json"]},
             ),
             ds.SplitGenerator(
-                name=ds.NamedSplit("validation_out_of_domain"),  # type: ignore
+                name=ds.NamedSplit("validation_out_of_domain"),
                 gen_kwargs={"file_path": file_paths["valid"]["out_of_domain"]["json"]},
+            ),
+            ds.SplitGenerator(
+                name=ds.NamedSplit("validation_out_of_domain_annotated"),
+                gen_kwargs={
+                    "file_path": file_paths["valid"]["out_of_domain"]["json_annotated"]
+                },
             ),
         ]
 
@@ -621,11 +627,11 @@ class JGLUE(ds.GeneratorBasedBuilder):
 
         return [
             ds.SplitGenerator(
-                name=ds.Split.TRAIN,  # type: ignore
+                name=ds.Split.TRAIN,
                 gen_kwargs={"file_path": file_paths["train"]},
             ),
             ds.SplitGenerator(
-                name=ds.Split.VALIDATION,  # type: ignore
+                name=ds.Split.VALIDATION,
                 gen_kwargs={"file_path": file_paths["valid"]},
             ),
         ]

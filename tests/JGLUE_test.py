@@ -58,3 +58,6 @@ def test_load_jcola(
     assert dataset["train"].num_rows == expected_num_train
     assert dataset["validation"].num_rows == expected_num_valid
     assert dataset["validation_out_of_domain"].num_rows == expected_num_valid_ood
+    assert (
+        dataset["validation_out_of_domain_annotated"].num_rows == expected_num_valid_ood
+    )
