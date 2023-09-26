@@ -1,4 +1,5 @@
 import json
+import logging
 import random
 import string
 import warnings
@@ -7,44 +8,40 @@ from typing import Dict, List, Optional, Union
 import datasets as ds
 import pandas as pd
 from datasets.tasks import QuestionAnsweringExtractive
-import logging
 
 logger = logging.getLogger(__name__)
 
 _CITATION = """\
-@inproceedings{kurihara-etal-2022-jglue,
-    title = "{JGLUE}: {J}apanese General Language Understanding Evaluation",
-    author = "Kurihara, Kentaro  and
-      Kawahara, Daisuke  and
-      Shibata, Tomohide",
-    booktitle = "Proceedings of the Thirteenth Language Resources and Evaluation Conference",
-    month = jun,
-    year = "2022",
-    address = "Marseille, France",
-    publisher = "European Language Resources Association",
-    url = "https://aclanthology.org/2022.lrec-1.317",
-    pages = "2957--2966",
-    abstract = "To develop high-performance natural language understanding (NLU) models, it is necessary to have a benchmark to evaluate and analyze NLU ability from various perspectives. While the English NLU benchmark, GLUE, has been the forerunner, benchmarks are now being released for languages other than English, such as CLUE for Chinese and FLUE for French; but there is no such benchmark for Japanese. We build a Japanese NLU benchmark, JGLUE, from scratch without translation to measure the general NLU ability in Japanese. We hope that JGLUE will facilitate NLU research in Japanese.",
+@inproceedings{kurihara-lrec-2022-jglue,
+  title={JGLUE: Japanese general language understanding evaluation},
+  author={Kurihara, Kentaro and Kawahara, Daisuke and Shibata, Tomohide},
+  booktitle={Proceedings of the Thirteenth Language Resources and Evaluation Conference},
+  pages={2957--2966},
+  year={2022},
+  url={https://aclanthology.org/2022.lrec-1.317/}
 }
 
-@InProceedings{Kurihara_nlp2022,
-  author = 	"栗原健太郎 and 河原大輔 and 柴田知秀",
-  title = 	"JGLUE: 日本語言語理解ベンチマーク",
-  booktitle = 	"言語処理学会第28回年次大会",
-  year =	"2022",
-  url = "https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E8-4.pdf"
-  note= "in Japanese"
+@inproceedings{kurihara-nlp-2022-jglue,
+  title={JGLUE: 日本語言語理解ベンチマーク},
+  author={栗原健太郎 and 河原大輔 and 柴田知秀},
+  booktitle={言語処理学会第28回年次大会},
+  pages={2023--2028},
+  year={2022},
+  url={https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E8-4.pdf},
+  note={in Japanese}
 }
 """
 
 _DESCRIPTION = """\
-JGLUE, Japanese General Language Understanding Evaluation, is built to measure the general NLU ability in Japanese. JGLUE has been constructed from scratch without translation. We hope that JGLUE will facilitate NLU research in Japanese.
+JGLUE, Japanese General Language Understanding Evaluation, \
+is built to measure the general NLU ability in Japanese. JGLUE has been constructed \
+from scratch without translation. We hope that JGLUE will facilitate NLU research in Japanese.\
 """
 
 _HOMEPAGE = "https://github.com/yahoojapan/JGLUE"
 
 _LICENSE = """\
-This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.\
 """
 
 _DESCRIPTION_CONFIGS = {
@@ -59,10 +56,10 @@ _URLS = {
     "MARC-ja": {
         "data": "https://s3.amazonaws.com/amazon-reviews-pds/tsv/amazon_reviews_multilingual_JP_v1_00.tsv.gz",
         "filter_review_id_list": {
-            "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/preprocess/marc-ja/data/filter_review_id_list/valid.txt"
+            "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/preprocess/marc-ja/data/filter_review_id_list/valid.txt",
         },
         "label_conv_review_id_list": {
-            "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/preprocess/marc-ja/data/label_conv_review_id_list/valid.txt"
+            "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/preprocess/marc-ja/data/label_conv_review_id_list/valid.txt",
         },
     },
     "JSTS": {
@@ -84,7 +81,7 @@ _URLS = {
 }
 
 
-def dataset_info_jsts() -> ds.Features:
+def dataset_info_jsts() -> ds.DatasetInfo:
     features = ds.Features(
         {
             "sentence_pair_id": ds.Value("string"),
@@ -103,7 +100,7 @@ def dataset_info_jsts() -> ds.Features:
     )
 
 
-def dataset_info_jnli() -> ds.Features:
+def dataset_info_jnli() -> ds.DatasetInfo:
     features = ds.Features(
         {
             "sentence_pair_id": ds.Value("string"),
@@ -125,7 +122,7 @@ def dataset_info_jnli() -> ds.Features:
     )
 
 
-def dataset_info_jsquad() -> ds.Features:
+def dataset_info_jsquad() -> ds.DatasetInfo:
     features = ds.Features(
         {
             "id": ds.Value("string"),
@@ -155,7 +152,7 @@ def dataset_info_jsquad() -> ds.Features:
     )
 
 
-def dataset_info_jcommonsenseqa() -> ds.Features:
+def dataset_info_jcommonsenseqa() -> ds.DatasetInfo:
     features = ds.Features(
         {
             "q_id": ds.Value("int64"),
@@ -180,7 +177,7 @@ def dataset_info_jcommonsenseqa() -> ds.Features:
     )
 
 
-def dataset_info_marc_ja() -> ds.Features:
+def dataset_info_marc_ja() -> ds.DatasetInfo:
     features = ds.Features(
         {
             "sentence": ds.Value("string"),
@@ -525,11 +522,11 @@ class JGLUE(ds.GeneratorBasedBuilder):
 
         return [
             ds.SplitGenerator(
-                name=ds.Split.TRAIN,
+                name=ds.Split.TRAIN,  # type: ignore
                 gen_kwargs={"split_df": split_dfs["train"]},
             ),
             ds.SplitGenerator(
-                name=ds.Split.VALIDATION,
+                name=ds.Split.VALIDATION,  # type: ignore
                 gen_kwargs={"split_df": split_dfs["valid"]},
             ),
         ]
@@ -538,11 +535,11 @@ class JGLUE(ds.GeneratorBasedBuilder):
         file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
         return [
             ds.SplitGenerator(
-                name=ds.Split.TRAIN,
+                name=ds.Split.TRAIN,  # type: ignore
                 gen_kwargs={"file_path": file_paths["train"]},
             ),
             ds.SplitGenerator(
-                name=ds.Split.VALIDATION,
+                name=ds.Split.VALIDATION,  # type: ignore
                 gen_kwargs={"file_path": file_paths["valid"]},
             ),
         ]
