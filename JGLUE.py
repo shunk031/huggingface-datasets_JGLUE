@@ -695,7 +695,6 @@ class JGLUE(ds.GeneratorBasedBuilder):
         def convert_addntional_info(json_dict):
             json_dict["translation"] = json_dict.get("translation")
             json_dict["gloss"] = json_dict.get("gloss")
-            json_dict["simple"] = json_dict.get("simple")
             return json_dict
 
         def convert_phenomenon(json_dict):
@@ -708,31 +707,34 @@ class JGLUE(ds.GeneratorBasedBuilder):
                 "binding": json_dict.pop("binding")
                 if argument_structure is not None
                 else None,
-                "filler_gap": json_dict.pop("filler-gap")
+                "control_raising": json_dict.pop("control/raising")
                 if argument_structure is not None
                 else None,
                 "ellipsis": json_dict.pop("ellipsis")
                 if argument_structure is not None
                 else None,
+                "filler_gap": json_dict.pop("filler-gap")
+                if argument_structure is not None
+                else None,
                 "island_effects": json_dict.pop("island effects")
                 if argument_structure is not None
                 else None,
-                "negative_polarity_items_licensing": json_dict.pop("NPI/NCI")
-                if argument_structure is not None
-                else None,
-                "quantifier": json_dict.pop("quantifier")
-                if argument_structure is not None
-                else None,
-                "control_raising": json_dict.pop("control/raising")
-                if argument_structure is not None
-                else None,
-                "verbal_agreement": json_dict.pop("verbal agr.")
+                "morphology": json_dict.pop("morphology")
                 if argument_structure is not None
                 else None,
                 "nominal_structure": json_dict.pop("nominal structure")
                 if argument_structure is not None
                 else None,
-                "morphology": json_dict.pop("morphology")
+                "negative_polarity_concord_items": json_dict.pop("NPI/NCI")
+                if argument_structure is not None
+                else None,
+                "quantifier": json_dict.pop("quantifier")
+                if argument_structure is not None
+                else None,
+                "verbal_agreement": json_dict.pop("verbal agr.")
+                if argument_structure is not None
+                else None,
+                "simple": json_dict.pop("simple")
                 if argument_structure is not None
                 else None,
             }
