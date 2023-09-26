@@ -199,19 +199,19 @@ An example of the JCoLA dataset (validation - out of domain annotated) looks as 
   "original": "太郎のゴミの捨て方",
   "translation": "‘The way (for Taro) to throw out garbage’",
   "gloss": true,
-  "simple": false,
   "linguistic_phenomenon": {
     "argument_structure": true,
     "binding": false,
-    "filler_gap": false,
-    "ellipsis": false,
-    "island_effects": false,
-    "negative_polarity_items_licensing": false,
-    "quantifier": false,
     "control_raising": false,
-    "verbal_agreement": false,
+    "ellipsis": false,
+    "filler_gap": false,
+    "island_effects": false,
+    "morphology": false,
     "nominal_structure": false,
-    "morphology": false
+    "negative_polarity_concord_items": false,
+    "quantifier": false,
+    "verbal_agreement": false,
+    "simple": false
   }
 }
 ```
@@ -373,7 +373,7 @@ From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#explanation-for-yjc
 
 #### JCoLA
 
-From [JCoLA's README.md](https://github.com/osekilab/JCoLA#data-description) and [JCoLA's paper](https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E7-1.pdf)
+From [JCoLA's README.md](https://github.com/osekilab/JCoLA#data-description) and [JCoLA's paper](https://arxiv.org/abs/2309.12676)
 
 - `uid`: unique id of the sentence
 - `source`: author and the year of publication of the source article
@@ -383,19 +383,19 @@ From [JCoLA's README.md](https://github.com/osekilab/JCoLA#data-description) and
 - `original`: original sentence as presented in the source article
 - `translation`: English translation of the sentence as presentend in the source article (if any)
 - `gloss`: gloss of the sentence as presented in the source article (if any)
-- `simple`: [More Information Needed]
 - `linguistic_phenomenon`
-  - `argument_structure`: 動詞の項構造に関わる容認性判断
-  - `binding`: 名詞句の束縛関係に関する容認性判断
-  - `filler_gap`: 移動した構成素と移動元の空所の依存関係に関する容認性判断
-  - `ellipsis`: 文中の要素の省略可能性に関する容認性判断
-  - `island effects`: 島の制約に関する容認性判断
-  - `negative_polarity_items_licensing`: 否定極性項目 (negative polarity items, NPIs) の出現環境に関する容認性判断
-  - `quantifiers`: 数量詞 (quantifiers) の分布に関する容認性判断
-  - `control_raising`: コントロール (control) や繰り上げ (raising) 構文に関する容認性判断
-  - `verbal_agreement`: BLiMP では、主語と動詞の数の一致に関する例文を、Subject-verb agreement としてまとめている。JCoLA では、より一般に主語の性質が動詞の形態に反映される現象や、動詞が主語の性質に制約を与えるような現象に関する容認性判断を含む中分類として Verbal Agreement を採用した
-  - `nominal_structure`: BLiMP では、限定詞 (determiner) と名詞の一致に関する例文を、Determiner-noun agreement としてまとめている。JCoLA では、より一般に名詞句の内部構造に関わる容認性判断を含む中分類として、Nominal structure を採用した
-  - `morphology`: BLiMP では、動詞の過去分詞の活用が正しく行われているかに関する例文を、Irregular forms としてまとめている。JCoLA では、より幅広く形態論に関する容認性判断を含む中分類として Morphology を採用した
+  - `argument_structure`: acceptability judgements based on the order of arguments and case marking
+  - `binding`: acceptability judgements based on the binding of noun phrases
+  - `control_raising`: acceptability judgements based on predicates that are categorized as control or raising
+  - `ellipsis`: acceptability judgements based on the possibility of omitting elements in the sentences
+  - `filler_gap`: acceptability judgements based on the dependency between the moved element and the gap
+  - `island effects`: acceptability judgements based on the restrictions on filler-gap dependencies such as wh-movements
+  - `morphology`: acceptability judgements based on the morphology
+  - `nominal_structure`: acceptability judgements based on the internal structure of noun phrases
+  - `negative_polarity_concord_items`: acceptability judgements based on the restrictions on where negative polarity/concord items (NPIs/NCIs) can appear
+  - `quantifiers`: acceptability judgements based on the distribution of quantifiers such as floating quantifiers
+  - `verbal_agreement`: acceptability judgements based on the dependency between subjects and verbs
+  - `simple`: acceptability judgements that do not have marked syntactic structures
 
 #### JNLI
 
@@ -434,7 +434,7 @@ From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md
 | Task                         | Dataset        | Train   | Dev   | Test  |
 |------------------------------|----------------|--------:|------:|------:|
 | Text Classification          | MARC-ja        | 187,528 | 5,654 | 5,639 |
-|                              | JCoLA          | 6,919   | 865&dagger; / 685&ddagger; | - |
+|                              | JCoLA          | 6,919   | 865&dagger; / 685&ddagger; | 865&dagger; / 685&ddagger; |
 | Sentence Pair Classification | JSTS           | 12,451  | 1,457 | 1,589 |
 |                              | JNLI           | 20,073  | 2,434 | 2,508 |
 | Question Answering           | JSQuAD         | 62,859  | 4,442 | 4,420 |
@@ -476,20 +476,13 @@ From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 ##### JCoLA
 
-From [JCoLA's paper](https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E7-1.pdf):
+From [JCoLA's paper](https://arxiv.org/abs/2309.12676):
 
-> ### JCoLA の構築
-> #### 3.1 データ収集
->言語モデルが理論言語学で重要とされている統語現象を捉えられているかを検証するため、本研究では東アジア・東南アジア言語の言語学のジャーナルとして著名な JEAL (Journal of East Asian Linguistics) に 10 年間（2006 年から 2015 年）で掲載された 133 本の論文の中で、特に日本語の統語論を扱っている論文 28 本を対象とし、その論文で提示されている全てのデータポイント（2,323 文）を抽出した。ここでの「全てのデータポイント」は、脚注や付録を含む本文の全ての日本語の例文の中で、構造分析のために提示された例文を除いたもののことである。
-> #### 3.2 タイプ分類
-> 単純な全データポイントに対する正解率による比較に終始することなく、個別の統語現象ごとのモデル評価を可能にするため、前節で抽出した例文を統語現象のタイプによって分類した。本研究では、全データポイントを 3 つの粒度で分類する。分類の名称については、BLiMP [14] を参考にした。まず、大分類として各データポイントが問題としている容認性判断の性質や、本文中での提示のされ方に基づいて 8 種類に分類した。次に、中分類として各データポイントがどのような統語現象を扱っているのかに基づく分類を行った (𝑝ℎ𝑒𝑛𝑜𝑚𝑒𝑛𝑜𝑛)。中分類は、基本的に BLiMP における 12 の現象に Others を加えたものであるが、今回対象とする日本語のデータに合わせてその一部を変更した（付録 A）。また、データポイントが二つ以上の現象に分類されうると判断された場合には、𝑝ℎ𝑒𝑛𝑜𝑚𝑒𝑛𝑜𝑛-2 を用意して分類した。ただし、言語モデルの統語現象ごとの評価の際には 𝑝ℎ𝑒𝑛𝑜𝑚𝑒𝑛𝑜𝑛の分類が優先される。最後に、小分類として中分類 (𝑝ℎ𝑒𝑛𝑜𝑚𝑒𝑛𝑜𝑛) よりさらに粒度の細かい、個別の統語現象ごとに 39 種類の分類を行った (𝑝𝑎𝑟𝑎𝑑𝑖𝑔𝑚)。これにより、エラー分析の際により粒度の細かい分析が可能となる。
-> #### 3.3 ミニマルペアの作成
-> まず、前節でタイプ分類が行われたデータセットのうち、以下の全ての条件を満たすものを抽出
-する。
-> • 非文として提示されている（? や*などのマーキングがされている）もの。ただし、? などのマーキングがされつつも、本文中で正例としてみなされているものは除く。
-> • 大分類が variation、repeat、footnote、appendix のいずれでもないもの。
-> • 中分類が others でないもの。
-> 次に、言語学の論文において提示された全ての負例には、対応する正例が存在するという仮定のもと [20]、以上により抜き出された負例のぞれぞれに対応する正例を、論文の中から採用するか、本文の内容を確認しつつ筆者が作例することにより構築した。この際、解釈により容認度が変わる例は、JCoLA に含めない不適切な例として、ミニマルペア構築の対象外とした。また、重複している例文や、語彙項目が異なるのみで検証対象が同じである例文も除外した。以上の手順により、合計で 369 ペアのミニマルペアが作成された（表 2、付録 B）。
+> ### 3 JCoLA
+> In this study, we introduce JCoLA (Japanese Corpus of Linguistic Acceptability), which will be the first large-scale acceptability judgment task dataset focusing on Japanese. JCoLA consists of sentences from textbooks and handbooks on Japanese syntax, as well as from journal articles on Japanese syntax that are published in JEAL (Journal of East Asian Linguistics), one of the prestigious journals in theoretical linguistics.
+
+> #### 3.1 Data Collection
+> Sentences in JCoLA were collected from prominent textbooks and handbooks focusing on Japanese syntax. In addition to the main text, example sentences included in the footnotes were also considered for collection. We also collected acceptability judgments from journal articles on Japanese syntax published in JEAL (Journal of East Asian Linguistics): one of the prestigious journals in the-oretical linguistics. Specifically, we examined all the articles published in JEAL between 2006 and 2015 (133 papers in total), and extracted 2,252 acceptability judgments from 26 papers on Japanese syntax (Table 2). Acceptability judgments include sentences in appendices and footnotes, but not sentences presented for analyses of syntactic structures (e.g. sentences with brackets to show their syntactic structures). As a result, a total of 11,984 example. sentences were collected. Using this as a basis, JCoLA was constructed through the methodology explained in the following sections.
 
 ##### JSTS and JNLI
 
@@ -589,7 +582,7 @@ From [JGLUE's paper](https://aclanthology.org/2022.lrec-1.317/):
 
 #### JCoLA
 
-- 染谷ら，"日本語版 CoLA の構築，" 言語処理学会第 28 回年次大会，2022.
+- Someya, Sugimoto, and Oseki. "JCoLA: Japanese Corpus of Linguistic Acceptability." arxiv preprint arXiv:2309.12676 (2023).
 
 #### JSTS and JNLI
 
@@ -658,6 +651,17 @@ From [JCoLA's README.md'](https://github.com/osekilab/JCoLA#license):
 #### JCoLA
 
 ```bibtex
+@article{someya-arxiv-2023-jcola,
+  title={JCoLA: Japanese Corpus of Linguistic Acceptability}, 
+  author={Taiga Someya and Yushi Sugimoto and Yohei Oseki},
+  year={2023},
+  eprint={2309.12676},
+  archivePrefix={arXiv},
+  primaryClass={cs.CL}
+}
+```
+
+```bibtex
 @inproceedings{someya-nlp-2022-jcola,
   title={日本語版 CoLA の構築},
   author={染谷 大河 and 大関 洋平},
@@ -666,6 +670,18 @@ From [JCoLA's README.md'](https://github.com/osekilab/JCoLA#license):
   year={2022},
   url={https://www.anlp.jp/proceedings/annual_meeting/2022/pdf_dir/E7-1.pdf},
   note={in Japanese}
+}
+```
+
+#### JSTS and JNLI
+
+```bibtex
+@inproceedings{miyazaki2016cross,
+  title={Cross-lingual image caption generation},
+  author={Miyazaki, Takashi and Shimizu, Nobuyuki},
+  booktitle={Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages={1780--1790},
+  year={2016}
 }
 ```
 
