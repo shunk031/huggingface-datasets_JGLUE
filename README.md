@@ -36,7 +36,9 @@ task_ids:
 # Dataset Card for JGLUE
 
 [![CI](https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/ci.yaml/badge.svg)](https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/ci.yaml)
-[![ACL2020 2020.acl-main.419](https://img.shields.io/badge/LREC2022-2022.lrec--1.317-red)](https://aclanthology.org/2022.lrec-1.317)
+[![Sync to Hugging Face Hub](https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/push_to_hub.yaml/badge.svg)](https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/push_to_hub.yaml)
+[![LRECACL2022 2022.lrec-1.317](https://img.shields.io/badge/LREC2022-2022.lrec--1.317-red)](https://aclanthology.org/2022.lrec-1.317)
+[![Hugging Face Datasets Hub](https://img.shields.io/badge/Hugging%20Face_🤗-Datasets-ffcc66)](https://huggingface.co/datasets/shunk031/JGLUE)
 
 This dataset loading script is developed on [GitHub](https://github.com/shunk031/huggingface-datasets_JGLUE).
 Please feel free to open an [issue](https://github.com/shunk031/huggingface-datasets_JGLUE/issues/new/choose) or [pull request](https://github.com/shunk031/huggingface-datasets_JGLUE/pulls).
@@ -699,3 +701,30 @@ From [JCoLA's README.md'](https://github.com/osekilab/JCoLA#license):
 
 Thanks to [Kentaro Kurihara](https://twitter.com/kkurihara_cs), [Daisuke Kawahara](https://twitter.com/daisukekawahar1), and [Tomohide Shibata](https://twitter.com/stomohide) for creating JGLUE dataset.
 Thanks to [Taiga Someya](https://twitter.com/T0a8i0g9a) for creating JCoLA dataset.
+
+```python
+# {
+#   "uid": 9109,
+#   "source": "Asano_and_Ura_2010",
+#   "label": 1,
+#   "diacritic": "g",
+#   "sentence": "太郎のゴミの捨て方について話した。",
+#   "original": "太郎のゴミの捨て方",
+#   "translation": "‘The way (for Taro) to throw out garbage’",
+#   "gloss": true,
+#   "linguistic_phenomenon": {
+#     "argument_structure": true,
+#     "binding": false,
+#     "control_raising": false,
+#     "ellipsis": false,
+#     "filler_gap": false,
+#     "island_effects": false,
+#     "morphology": false,
+#     "nominal_structure": false,
+#     "negative_polarity_concord_items": false,
+#     "quantifier": false,
+#     "verbal_agreement": false,
+#     "simple": false
+#   }
+# }
+```
