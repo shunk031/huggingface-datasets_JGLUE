@@ -701,30 +701,3 @@ From [JCoLA's README.md'](https://github.com/osekilab/JCoLA#license):
 
 Thanks to [Kentaro Kurihara](https://twitter.com/kkurihara_cs), [Daisuke Kawahara](https://twitter.com/daisukekawahar1), and [Tomohide Shibata](https://twitter.com/stomohide) for creating JGLUE dataset.
 Thanks to [Taiga Someya](https://twitter.com/T0a8i0g9a) for creating JCoLA dataset.
-
-```python
-# {
-#   "uid": 9109,
-#   "source": "Asano_and_Ura_2010",
-#   "label": 1,
-#   "diacritic": "g",
-#   "sentence": "太郎のゴミの捨て方について話した。",
-#   "original": "太郎のゴミの捨て方",
-#   "translation": "‘The way (for Taro) to throw out garbage’",
-#   "gloss": true,
-#   "linguistic_phenomenon": {
-#     "argument_structure": true,
-#     "binding": false,
-#     "control_raising": false,
-#     "ellipsis": false,
-#     "filler_gap": false,
-#     "island_effects": false,
-#     "morphology": false,
-#     "nominal_structure": false,
-#     "negative_polarity_concord_items": false,
-#     "quantifier": false,
-#     "verbal_agreement": false,
-#     "simple": false
-#   }
-# }
-```
