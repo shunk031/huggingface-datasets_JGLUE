@@ -584,7 +584,12 @@ class JGLUE(ds.GeneratorBasedBuilder):
             raise ValueError(f"Invalid config name: {self.config.name}")
 
     def __split_generators_marc_ja(self, dl_manager: ds.DownloadManager):
-        file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
+        try:
+            file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
+        except FileNotFoundError as err:
+            logger.warning(err)
+            _URLS[self.config.name].pop("data")
+            file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
 
         filter_review_id_list = file_paths["filter_review_id_list"]
         label_conv_review_id_list = file_paths["label_conv_review_id_list"]
