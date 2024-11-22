@@ -8,7 +8,6 @@ from typing import Dict, List, Literal, Optional
 
 import datasets as ds
 import pandas as pd
-from datasets.tasks import QuestionAnsweringExtractive
 
 logger = logging.getLogger(__name__)
 
@@ -201,13 +200,6 @@ def dataset_info_jsquad() -> ds.DatasetInfo:
         license=_JGLUE_LICENSE,
         features=features,
         supervised_keys=None,
-        task_templates=[
-            QuestionAnsweringExtractive(
-                question_column="question",
-                context_column="context",
-                answers_column="answers",
-            )
-        ],
     )
 
 

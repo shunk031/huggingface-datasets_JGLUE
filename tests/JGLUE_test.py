@@ -22,7 +22,7 @@ def test_load_dataset(
     expected_num_train: int,
     expected_num_valid: int,
 ):
-    dataset = ds.load_dataset(path=dataset_path, name=dataset_name)
+    dataset = ds.load_dataset(path=dataset_path, name=dataset_name, trust_remote_code=True)
 
     assert dataset["train"].num_rows == expected_num_train
     assert dataset["validation"].num_rows == expected_num_valid
@@ -41,6 +41,7 @@ def test_load_marc_ja(
         max_char_length=500,
         filter_review_id_list_valid=True,
         label_conv_review_id_list_valid=True,
+        trust_remote_code=True,
     )
 
     assert dataset["train"].num_rows == expected_num_train
@@ -54,7 +55,7 @@ def test_load_jcola(
     expected_num_valid: int = 865,
     expected_num_valid_ood: int = 685,
 ):
-    dataset = ds.load_dataset(path=dataset_path, name=dataset_name)
+    dataset = ds.load_dataset(path=dataset_path, name=dataset_name, trust_remote_code=True)
     assert dataset["train"].num_rows == expected_num_train
     assert dataset["validation"].num_rows == expected_num_valid
     assert dataset["validation_out_of_domain"].num_rows == expected_num_valid_ood
