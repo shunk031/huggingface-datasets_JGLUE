@@ -588,8 +588,9 @@ class JGLUE(ds.GeneratorBasedBuilder):
             file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
         except FileNotFoundError as err:
             logger.warning(err)
-            _URLS[self.config.name].pop("data")
-            file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
+            urls = _URLS[self.config.name]
+            urls.pop("data")  # type: ignore[attr-defined]
+            file_paths = dl_manager.download_and_extract(urls)
 
         filter_review_id_list = file_paths["filter_review_id_list"]
         label_conv_review_id_list = file_paths["label_conv_review_id_list"]
