@@ -588,6 +588,8 @@ class JGLUE(ds.GeneratorBasedBuilder):
             file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
         except FileNotFoundError as err:
             logger.warning(err)
+            # An error occurs because the file cannot be downloaded from _URLS[MARC-ja]['data'].
+            # So, remove the 'data' key and try to download again.
             urls = _URLS[self.config.name]
             urls.pop("data")  # type: ignore[attr-defined]
             file_paths = dl_manager.download_and_extract(urls)
