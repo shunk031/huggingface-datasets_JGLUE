@@ -8,7 +8,6 @@ from typing import Dict, List, Literal, Optional
 
 import datasets as ds
 import pandas as pd
-from datasets.tasks import QuestionAnsweringExtractive
 
 logger = logging.getLogger(__name__)
 
@@ -201,13 +200,6 @@ def dataset_info_jsquad() -> ds.DatasetInfo:
         license=_JGLUE_LICENSE,
         features=features,
         supervised_keys=None,
-        task_templates=[
-            QuestionAnsweringExtractive(
-                question_column="question",
-                context_column="context",
-                answers_column="answers",
-            )
-        ],
     )
 
 
@@ -592,7 +584,15 @@ class JGLUE(ds.GeneratorBasedBuilder):
             raise ValueError(f"Invalid config name: {self.config.name}")
 
     def __split_generators_marc_ja(self, dl_manager: ds.DownloadManager):
-        file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
+        try:
+            file_paths = dl_manager.download_and_extract(_URLS[self.config.name])
+        except FileNotFoundError as err:
+            logger.warning(err)
+            # An error occurs because the file cannot be downloaded from _URLS[MARC-ja]['data'].
+            # So, remove the 'data' key and try to download again.
+            urls = _URLS[self.config.name]
+            urls.pop("data")  # type: ignore[attr-defined]
+            file_paths = dl_manager.download_and_extract(urls)
 
         filter_review_id_list = file_paths["filter_review_id_list"]
         label_conv_review_id_list = file_paths["label_conv_review_id_list"]

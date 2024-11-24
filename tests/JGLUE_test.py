@@ -1,6 +1,11 @@
 import datasets as ds
 import pytest
 
+# In datasets>=3.0.0, HF_DATASETS_TRUST_REMOTE_CODE defaults to False,
+# which triggers confirmation dialogs when loading datasets and interrupts testing.
+# Therefore, HF_DATASETS_TRUST_REMOTE_CODE is set to True.
+ds.config.HF_DATASETS_TRUST_REMOTE_CODE = True
+
 
 @pytest.fixture
 def dataset_path() -> str:
