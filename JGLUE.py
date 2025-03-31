@@ -121,21 +121,22 @@ _URLS = {
         },
     },
     "JSTS": {
-        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jsts-v1.2/train-v1.2.json",
-        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jsts-v1.2/valid-v1.2.json",
+        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jsts-v1.2/train-v1.2.json",
+        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jsts-v1.2/valid-v1.2.json",
     },
     "JNLI": {
-        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jnli-v1.2/train-v1.2.json",
-        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jnli-v1.2/valid-v1.2.json",
+        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jnli-v1.2/train-v1.2.json",
+        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jnli-v1.2/valid-v1.2.json",
     },
     "JSQuAD": {
-        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jsquad-v1.2/train-v1.2.json",
-        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jsquad-v1.2/valid-v1.2.json",
+        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jsquad-v1.2/train-v1.2.json",
+        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jsquad-v1.2/valid-v1.2.json",
     },
     "JCommonsenseQA": {
-        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jcommonsenseqa-v1.2/train-v1.2.json",
-        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jcommonsenseqa-v1.2/valid-v1.2.json",
+        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jcommonsenseqa-v1.2/train-v1.2.json",
+        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jcommonsenseqa-v1.2/valid-v1.2.json",
     },
+
 }
 
 
