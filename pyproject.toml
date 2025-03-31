@@ -1,6 +1,6 @@
 [project]
 name = "huggingface-datasets-jglue"
-version = "1.2.0"
+version = "1.2.1"
 description = "Dataset loading script for JGLUE: Japanese General Language Understanding Evaluation"
 authors = [
     { name = "Shunsuke Kitada", email = "shunsuke.kitada.0831@gmail.com" },
