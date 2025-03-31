@@ -28,6 +28,7 @@ def test_load_dataset(
     expected_num_valid: int,
 ):
     dataset = ds.load_dataset(path=dataset_path, name=dataset_name)
+    assert isinstance(dataset, ds.DatasetDict)
 
     assert dataset["train"].num_rows == expected_num_train
     assert dataset["validation"].num_rows == expected_num_valid
@@ -47,6 +48,7 @@ def test_load_marc_ja(
         filter_review_id_list_valid=True,
         label_conv_review_id_list_valid=True,
     )
+    assert isinstance(dataset, ds.DatasetDict)
 
     assert dataset["train"].num_rows == expected_num_train
     assert dataset["validation"].num_rows == expected_num_valid
@@ -60,9 +62,30 @@ def test_load_jcola(
     expected_num_valid_ood: int = 685,
 ):
     dataset = ds.load_dataset(path=dataset_path, name=dataset_name)
+    assert isinstance(dataset, ds.DatasetDict)
+
     assert dataset["train"].num_rows == expected_num_train
     assert dataset["validation"].num_rows == expected_num_valid
     assert dataset["validation_out_of_domain"].num_rows == expected_num_valid_ood
     assert (
         dataset["validation_out_of_domain_annotated"].num_rows == expected_num_valid_ood
+    )
+
+
+def test_jglue_version():
+    import tomli
+
+    from JGLUE import JGLUE
+
+    jglue_version = JGLUE.JGLUE_VERSION
+    jglue_major, jglue_minor, _ = jglue_version.tuple
+
+    with open("pyproject.toml", "rb") as rf:
+        pyproject_toml = tomli.load(rf)
+
+    project_version = ds.Version(pyproject_toml["project"]["version"])
+    proj_major, proj_minor, _ = project_version.tuple
+
+    assert jglue_major == proj_major and jglue_minor == proj_minor, (
+        f"JGLUE and project version mismatch: {jglue_version=} != {project_version=}"
     )
