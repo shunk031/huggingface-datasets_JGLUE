@@ -45,7 +45,7 @@ Please feel free to open an [issue](https://github.com/shunk031/huggingface-data
 
 > [!IMPORTANT]
 > The version of this loading script has been updated to correspond to the version of JGLUE.
-> Please check the release history at [yahoojapan/JGLUE/releases](https://github.com/yahoojapan/JGLUE/releases) and [https://github.com/shunk031/huggingface-datasets_JGLUE/releases].
+> Please check the release history at [yahoojapan/JGLUE/releases](https://github.com/yahoojapan/JGLUE/releases) and [shunk031/huggingface-datasets_JGLUE/releases](https://github.com/shunk031/huggingface-datasets_JGLUE/releases).
 
 ## Table of Contents
 - [Table of Contents](#table-of-contents)
