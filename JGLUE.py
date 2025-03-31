@@ -136,7 +136,6 @@ _URLS = {
         "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jcommonsenseqa-v1.2/train-v1.2.json",
         "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jcommonsenseqa-v1.2/valid-v1.2.json",
     },
-
 }
 
 
