@@ -35,10 +35,20 @@ task_ids:
 
 # Dataset Card for JGLUE
 
-[![CI](https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/ci.yaml/badge.svg)](https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/ci.yaml)
-[![Sync to Hugging Face Hub](https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/push_to_hub.yaml/badge.svg)](https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/push_to_hub.yaml)
-[![LRECACL2022 2022.lrec-1.317](https://img.shields.io/badge/LREC2022-2022.lrec--1.317-red)](https://aclanthology.org/2022.lrec-1.317)
-[![Hugging Face Datasets Hub](https://img.shields.io/badge/Hugging%20Face_🤗-Datasets-ffcc66)](https://huggingface.co/datasets/shunk031/JGLUE)
+<p>
+  <a href="https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/ci.yaml">
+    <img src="https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/ci.yaml/badge.svg" alt="CI" style="display: inline-block;" />
+  </a>
+  <a href="https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/push_to_hub.yaml">
+    <img src="https://github.com/shunk031/huggingface-datasets_JGLUE/actions/workflows/push_to_hub.yaml/badge.svg" alt="Sync to Hugging Face Hub" style="display: inline-block;" />
+  </a>
+  <a href="https://aclanthology.org/2022.lrec-1.317">
+    <img src="https://img.shields.io/badge/LREC2022-2022.lrec--1.317-red" alt="LRECACL2022 2022.lrec-1.317" style="display: inline-block;" />
+  </a>
+  <a href="https://huggingface.co/datasets/shunk031/JGLUE">
+    <img src="https://img.shields.io/badge/Hugging%20Face_🤗-Datasets-ffcc66" alt="Hugging Face Datasets Hub" style="display: inline-block;" />
+  </a>
+</p>
 
 This dataset loading script is developed on [GitHub](https://github.com/shunk031/huggingface-datasets_JGLUE).
 Please feel free to open an [issue](https://github.com/shunk031/huggingface-datasets_JGLUE/issues/new/choose) or [pull request](https://github.com/shunk031/huggingface-datasets_JGLUE/pulls).
