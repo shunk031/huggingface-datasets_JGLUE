@@ -122,8 +122,7 @@ _URLS = {
     },
     "JSTS": {
         "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.1.0/datasets/jsts-v1.1/train-v1.1.json",
-        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.1.0/datasets/jsts-v1.1/valid-v1.1.json",  
-
+        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.1.0/datasets/jsts-v1.1/valid-v1.1.json",
     },
     "JNLI": {
         "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.1.0/datasets/jnli-v1.1/train-v1.1.json",
