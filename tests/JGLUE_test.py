@@ -17,7 +17,7 @@ def dataset_path() -> str:
     argvalues=(
         ("JSTS", 12451, 1457),
         ("JNLI", 20073, 2434),
-        ("JSQuAD", 62859, 4442),
+        ("JSQuAD", 62697, 4442),
         ("JCommonsenseQA", 8939, 1119),
     ),
 )
