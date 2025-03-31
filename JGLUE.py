@@ -530,7 +530,7 @@ def preprocess_for_marc_ja(
 
 
 class JGLUE(ds.GeneratorBasedBuilder):
-    JGLUE_VERSION = ds.Version("1.1.0")
+    JGLUE_VERSION = ds.Version("1.0.0")
     JCOLA_VERSION = ds.Version("1.0.0")
 
     BUILDER_CONFIG_CLASS = JGLUEConfig
