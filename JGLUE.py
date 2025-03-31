@@ -123,18 +123,22 @@ _URLS = {
     "JSTS": {
         "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jsts-v1.3/train-v1.3.json",
         "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jsts-v1.3/valid-v1.3.json",
+        "test": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jsts-v1.3/test-v1.3.json",
     },
     "JNLI": {
         "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jnli-v1.3/train-v1.3.json",
         "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jnli-v1.3/valid-v1.3.json",
+        "test": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jnli-v1.3/test-v1.3.json",
     },
     "JSQuAD": {
         "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jsquad-v1.3/train-v1.3.json",
         "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jsquad-v1.3/valid-v1.3.json",
+        "test": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jsquad-v1.3/test-v1.3.json",
     },
     "JCommonsenseQA": {
         "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jcommonsenseqa-v1.3/train-v1.3.json",
         "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jcommonsenseqa-v1.3/valid-v1.3.json",
+        "test": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jcommonsenseqa-v1.3/test-v1.3.json",
     },
 }
 
@@ -663,6 +667,10 @@ class JGLUE(ds.GeneratorBasedBuilder):
             ds.SplitGenerator(
                 name=ds.Split.VALIDATION,
                 gen_kwargs={"file_path": file_paths["valid"]},
+            ),
+            ds.SplitGenerator(
+                name=ds.Split.TEST,
+                gen_kwargs={"file_path": file_paths["test"]},
             ),
         ]
 

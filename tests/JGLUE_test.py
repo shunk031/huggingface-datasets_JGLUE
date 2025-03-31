@@ -13,12 +13,12 @@ def dataset_path() -> str:
 
 
 @pytest.mark.parametrize(
-    argnames="dataset_name, expected_num_train, expected_num_valid,",
+    argnames="dataset_name, expected_num_train, expected_num_valid, expected_num_test",
     argvalues=(
-        ("JSTS", 12451, 1457),
-        ("JNLI", 20073, 2434),
-        ("JSQuAD", 62697, 4442),
-        ("JCommonsenseQA", 8939, 1119),
+        ("JSTS", 12451, 1457, 1589),
+        ("JNLI", 20073, 2434, 2508),
+        ("JSQuAD", 62697, 4442, 4420),
+        ("JCommonsenseQA", 8939, 1119, 1118),
     ),
 )
 def test_load_dataset(
@@ -26,12 +26,16 @@ def test_load_dataset(
     dataset_name: str,
     expected_num_train: int,
     expected_num_valid: int,
+    expected_num_test: int,
 ):
     dataset = ds.load_dataset(path=dataset_path, name=dataset_name)
     assert isinstance(dataset, ds.DatasetDict)
 
+    # For the expected number of train, valid, and test datasets, refer to the JGLUE README
+    # ref. https://github.com/yahoojapan/JGLUE#tasksdatasets
     assert dataset["train"].num_rows == expected_num_train
     assert dataset["validation"].num_rows == expected_num_valid
+    assert dataset["test"].num_rows == expected_num_test
 
 
 def test_load_marc_ja(
@@ -39,6 +43,7 @@ def test_load_marc_ja(
     dataset_name: str = "MARC-ja",
     expected_num_train: int = 187528,
     expected_num_valid: int = 5654,
+    expected_num_test: int = -1,
 ):
     dataset = ds.load_dataset(
         path=dataset_path,
@@ -52,6 +57,7 @@ def test_load_marc_ja(
 
     assert dataset["train"].num_rows == expected_num_train
     assert dataset["validation"].num_rows == expected_num_valid
+    assert dataset["test"].num_rows == expected_num_test
 
 
 def test_load_jcola(
