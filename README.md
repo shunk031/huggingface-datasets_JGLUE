@@ -143,7 +143,7 @@ From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#jcommonsenseqa):
 
 From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE#leaderboard):
 
-> A leaderboard will be made public soon. The test set will be released at that time.
+> ~~A leaderboard will be made public soon. The test set will be released at that time.~~ The test set has been released (without a leaderboard).
 
 ### Languages
 
@@ -445,7 +445,7 @@ From [JCoLA's README.md](https://github.com/osekilab/JCoLA#data-description) and
 
 From [JGLUE's README.md](https://github.com/yahoojapan/JGLUE/blob/main/README.md#tasksdatasets):
 
-> Only train/dev sets are available now, and the test set will be available after the leaderboard is made public.
+> ~~Only train/dev sets are available now, and the test set will be available after the leaderboard is made public.~~
 
 From [JCoLA's paper](https://arxiv.org/abs/2309.12676):
 
