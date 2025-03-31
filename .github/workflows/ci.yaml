@@ -26,25 +26,20 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -U pip setuptools wheel poetry
-          poetry install
+          make install
 
       - name: Format
         run: |
-          poetry run black --check .
+          make format
 
       - name: Lint
         run: |
-          poetry run ruff check .
+          make lint
 
       - name: Type check
         run: |
-          poetry run mypy . \
-            --ignore-missing-imports \
-            --no-strict-optional \
-            --no-site-packages \
-            --cache-dir=/dev/null
-            
+          make typecheck
+
       - name: Run tests
         run: |
-          poetry run pytest --color=yes -rf
+          make test
