@@ -121,20 +121,20 @@ _URLS = {
         },
     },
     "JSTS": {
-        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jsts-v1.2/train-v1.2.json",
-        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jsts-v1.2/valid-v1.2.json",
+        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jsts-v1.3/train-v1.3.json",
+        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jsts-v1.3/valid-v1.3.json",
     },
     "JNLI": {
-        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jnli-v1.2/train-v1.2.json",
-        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jnli-v1.2/valid-v1.2.json",
+        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jnli-v1.3/train-v1.3.json",
+        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jnli-v1.3/valid-v1.3.json",
     },
     "JSQuAD": {
-        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jsquad-v1.2/train-v1.2.json",
-        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jsquad-v1.2/valid-v1.2.json",
+        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jsquad-v1.3/train-v1.3.json",
+        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jsquad-v1.3/valid-v1.3.json",
     },
     "JCommonsenseQA": {
-        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jcommonsenseqa-v1.2/train-v1.2.json",
-        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.2.0/datasets/jcommonsenseqa-v1.2/valid-v1.2.json",
+        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jcommonsenseqa-v1.3/train-v1.3.json",
+        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/refs/tags/v1.3.0/datasets/jcommonsenseqa-v1.3/valid-v1.3.json",
     },
 }
 
@@ -530,7 +530,7 @@ def preprocess_for_marc_ja(
 
 
 class JGLUE(ds.GeneratorBasedBuilder):
-    JGLUE_VERSION = ds.Version("1.2.0")
+    JGLUE_VERSION = ds.Version("1.3.0")
     JCOLA_VERSION = ds.Version("1.0.0")
 
     BUILDER_CONFIG_CLASS = JGLUEConfig
