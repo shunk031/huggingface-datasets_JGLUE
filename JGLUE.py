@@ -121,20 +121,20 @@ _URLS = {
         },
     },
     "JSTS": {
-        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jsts-v1.1/train-v1.1.json",
-        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jsts-v1.1/valid-v1.1.json",
+        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jsts-v1.2/train-v1.2.json",
+        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jsts-v1.2/valid-v1.2.json",
     },
     "JNLI": {
-        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jnli-v1.1/train-v1.1.json",
-        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jnli-v1.1/valid-v1.1.json",
+        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jnli-v1.2/train-v1.2.json",
+        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jnli-v1.2/valid-v1.2.json",
     },
     "JSQuAD": {
-        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jsquad-v1.1/train-v1.1.json",
-        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jsquad-v1.1/valid-v1.1.json",
+        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jsquad-v1.2/train-v1.2.json",
+        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jsquad-v1.2/valid-v1.2.json",
     },
     "JCommonsenseQA": {
-        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jcommonsenseqa-v1.1/train-v1.1.json",
-        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jcommonsenseqa-v1.1/valid-v1.1.json",
+        "train": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jcommonsenseqa-v1.2/train-v1.2.json",
+        "valid": "https://raw.githubusercontent.com/yahoojapan/JGLUE/main/datasets/jcommonsenseqa-v1.2/valid-v1.2.json",
     },
 }
 
@@ -530,7 +530,7 @@ def preprocess_for_marc_ja(
 
 
 class JGLUE(ds.GeneratorBasedBuilder):
-    JGLUE_VERSION = ds.Version("1.1.0")
+    JGLUE_VERSION = ds.Version("1.2.0")
     JCOLA_VERSION = ds.Version("1.0.0")
 
     BUILDER_CONFIG_CLASS = JGLUEConfig
