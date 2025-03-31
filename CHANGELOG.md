@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.2.1](https://github.com/shunk031/huggingface-datasets_JGLUE/compare/v1.2.0...v1.2.1) - 2025-03-31
+- Update README.md to enhance badge display with inline styling by @shunk031 in https://github.com/shunk031/huggingface-datasets_JGLUE/pull/31
+
 ## [v1.2.0](https://github.com/shunk031/huggingface-datasets_JGLUE/compare/v1.1.1...v1.2.0) - 2025-03-31
 - Update dataset URLs and version to 1.2.0 by @shunk031 in https://github.com/shunk031/huggingface-datasets_JGLUE/pull/20
 
