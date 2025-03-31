@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.1.0](https://github.com/shunk031/huggingface-datasets_JGLUE/compare/v1.0.0...v1.1.0) - 2025-03-31
+- Update dataset URLs to use versioned tags and bump version to 1.1.0 by @shunk031 in https://github.com/shunk031/huggingface-datasets_JGLUE/pull/22
+
 ## [v0.0.1](https://github.com/shunk031/huggingface-datasets_JGLUE/commits/v0.0.1) - 2025-03-31
 - Initialize by @shunk031 in https://github.com/shunk031/huggingface-datasets_JGLUE/pull/1
 - Fix for the huggingface dataset viewer by @shunk031 in https://github.com/shunk031/huggingface-datasets_JGLUE/pull/2
