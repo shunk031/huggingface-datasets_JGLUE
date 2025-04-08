@@ -481,7 +481,12 @@ def preprocess_for_marc_ja(
     from tqdm import tqdm
 
     df = pd.read_csv(data_file_path, delimiter="\t")
-    df = df[["review_body", "star_rating", "review_id"]]
+    try:
+        df = df[["review_body", "star_rating", "review_id"]]
+    except KeyError as err:
+        raise ValueError(
+            f"Invalid data loaded from {data_file_path}:\n{df.head()}"
+        ) from err
 
     # rename columns
     df = df.rename(columns={"review_body": "text", "star_rating": "rating"})
